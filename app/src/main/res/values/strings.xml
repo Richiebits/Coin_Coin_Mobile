@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Coin_Coin_Mobile</string>
+    <string name="button">Button</string>
+    <string name="todo">TODO</string>
+    <string name="mes_projets">Mes Projets</string>
+    <string name="Conteneur" />
 </resources>
