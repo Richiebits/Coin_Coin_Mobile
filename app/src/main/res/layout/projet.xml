@@ -8,54 +8,61 @@
     android:orientation="vertical"
     tools:context=".Projet">
 
-
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="130dp"
         android:background="@drawable/header_jaune"
         android:gravity="top"
         android:orientation="horizontal"
-        tools:ignore="UselessParent">
+        tools:ignore="UselessParent"
+        app:cardElevation="16dp">
 
         <ImageButton
             android:id="@+id/button4"
             android:layout_width="57dp"
             android:layout_height="64dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="35dp"
             android:background="@android:color/transparent"
             android:contentDescription="@string/button"
             android:scaleType="fitXY"
             android:src="@drawable/fleche"
-            tools:ignore="RedundantDescriptionCheck" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.393" />
 
         <TextView
             android:id="@+id/textView"
             android:layout_width="187dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="35dp"
-            android:layout_marginEnd="25dp"
             android:fontFamily="@font/junge"
             android:text="@string/mes_projets"
             android:textAlignment="center"
             android:textColor="#040303"
             android:textSize="34sp"
             android:textStyle="bold"
-            android:typeface="monospace"
-            tools:ignore="TextSizeCheck" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/imageView"
+            app:layout_constraintHorizontal_bias="0.469"
+            app:layout_constraintStart_toEndOf="@id/button4"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.397"
+            tools:ignore="MissingConstraints" />
 
         <ImageView
+            android:id="@+id/imageView"
             android:layout_width="87dp"
             android:layout_height="93dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="10dp"
+            android:layout_marginEnd="4dp"
             android:background="@drawable/circle_white"
             android:contentDescription="@string/todo"
             android:src="@drawable/logo"
-            tools:ignore="ImageContrastCheck" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.162"
+            tools:ignore="MissingConstraints" />
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ScrollView
         android:id="@+id/ConteneurScroll"
@@ -66,6 +73,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/white"
             android:orientation="vertical">
 
 

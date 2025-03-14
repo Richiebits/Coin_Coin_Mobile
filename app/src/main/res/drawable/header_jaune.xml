@@ -5,7 +5,8 @@
     android:height="200dp"
     android:viewportWidth="200"
     app:cardElevation="8dp"
-    android:viewportHeight="200">
+    android:viewportHeight="200"
+    >
 
     <path
         android:fillColor="#FCDE70"
@@ -15,4 +16,11 @@
         android:fillColor="#bfbebe"
         android:pathData="M 200,195 L 200,200 L 0,160 L 0,155 Z" >
     </path>
+    <path
+        android:fillColor="@color/white"
+        android:pathData="M 200,200 L 0,200 L 0,160 L 200,200 Z"
+        >
+
+    </path>
+
 </vector>
