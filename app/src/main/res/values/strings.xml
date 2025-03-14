@@ -4,4 +4,11 @@
     <string name="todo">TODO</string>
     <string name="mes_projets">Mes Projets</string>
     <string name="Conteneur" />
+    <string name="un_projet_exemple">Un projet exemple</string>
+    <string name="projet">Projet</string>
+    <string name="entrer_votre_nom">Entrer votre nom</string>
+    <string name="mot_de_passe">Mot De Passe</string>
+    <string name="nouveau_mot_de_passe">Nouveau Mot De Passe</string>
+    <string name="mes_comptes">Mes Comptes</string>
+    <string name="mon_compte">Mon Compte</string>
 </resources>

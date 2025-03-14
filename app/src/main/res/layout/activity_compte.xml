@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Compte">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="130dp"
+        android:background="@drawable/header_jaune"
+        android:gravity="top"
+        android:orientation="horizontal"
+        tools:ignore="UselessParent"
+        app:cardElevation="16dp">
+
+        <ImageButton
+            android:id="@+id/btnRetour"
+            android:layout_width="42dp"
+            android:layout_height="39dp"
+            android:layout_marginStart="32dp"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/button"
+            android:elevation="16dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/fleche"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.395"
+            tools:ignore="RedundantDescriptionCheck" />
+
+        <TextView
+            android:id="@+id/txtTitre"
+            android:layout_width="187dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/galindo"
+            android:text="@string/mon_compte"
+            android:textAlignment="center"
+            android:textColor="#040303"
+            android:textSize="26sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/imageLogo"
+            app:layout_constraintStart_toEndOf="@id/btnRetour"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.39"
+            tools:ignore="MissingConstraints,TextSizeCheck" />
+
+        <ImageView
+            android:id="@+id/imageLogo"
+            android:layout_width="79dp"
+            android:layout_height="78dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/circle_white"
+            android:contentDescription="@string/todo"
+            android:elevation="16dp"
+            android:src="@drawable/logo"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.162"
+            tools:ignore="MissingConstraints,ImageContrastCheck" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+        <EditText
+            android:fontFamily="@font/junge"
+            android:enabled="false"
+            android:id="@+id/editPrenom"
+            android:layout_width="323dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="4dp"
+            android:autofillHints=""
+            android:background="@drawable/input_box"
+            android:elevation="8dp"
+            android:gravity="center"
+            android:hint="Prénom"
+            android:inputType="textPersonName"
+            android:padding="12dp"
+            android:stateListAnimator="@animator/scale_on_click"
+            android:textColor="@android:color/black"
+            android:textColorHint="#000000"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toStartOf="@+id/guideline5"
+            app:layout_constraintStart_toStartOf="@+id/guideline4"
+            app:layout_constraintTop_toTopOf="@+id/guideline2"
+            tools:ignore="MissingConstraints,TextContrastCheck" />
+
+        <EditText
+            android:fontFamily="@font/junge"
+            android:id="@+id/editNom"
+            android:layout_width="323dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="16dp"
+            android:autofillHints=""
+            android:background="@drawable/input_box"
+            android:elevation="8dp"
+            android:enabled="false"
+            android:gravity="center"
+            android:hint="Nom"
+            android:inputType="textPersonName"
+            android:padding="12dp"
+            android:stateListAnimator="@animator/scale_on_click"
+            android:textColor="@android:color/black"
+            android:textColorHint="#000000"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toStartOf="@+id/guideline5"
+            app:layout_constraintStart_toStartOf="@+id/guideline4"
+            app:layout_constraintTop_toBottomOf="@+id/editPrenom"
+            tools:ignore="MissingConstraints,TextContrastCheck" />
+
+        <EditText
+            android:fontFamily="@font/junge"
+            android:id="@+id/editEmail"
+            android:layout_width="323dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="16dp"
+            android:autofillHints=""
+            android:background="@drawable/input_box"
+            android:elevation="8dp"
+            android:enabled="false"
+            android:gravity="center"
+            android:hint="Email"
+            android:inputType="textPersonName"
+            android:padding="12dp"
+            android:stateListAnimator="@animator/scale_on_click"
+            android:textColor="@android:color/black"
+            android:textColorHint="#000000"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toStartOf="@+id/guideline5"
+            app:layout_constraintStart_toStartOf="@+id/guideline4"
+            app:layout_constraintTop_toBottomOf="@+id/editNom"
+            tools:ignore="MissingConstraints,TextContrastCheck" />
+
+        <EditText
+            android:fontFamily="@font/junge"
+            android:id="@+id/editMDPModif"
+            android:layout_width="323dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="16dp"
+            android:autofillHints=""
+            android:background="@drawable/input_box"
+            android:elevation="8dp"
+            android:enabled="false"
+            android:gravity="center"
+            android:hint="Mot De Passe pour modifier"
+            android:inputType="textPersonName"
+            android:padding="12dp"
+            android:stateListAnimator="@animator/scale_on_click"
+            android:textColor="@android:color/black"
+            android:textColorHint="#000000"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toStartOf="@+id/guideline5"
+            app:layout_constraintHorizontal_bias="0.489"
+            app:layout_constraintStart_toStartOf="@+id/guideline4"
+            app:layout_constraintTop_toBottomOf="@+id/editEmail"
+            tools:ignore="MissingConstraints,TextContrastCheck" />
+
+        <Button
+            android:id="@+id/btnEnvoyerModif"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="-2dp"
+            android:backgroundTint="#F4CE14"
+            android:elevation="8dp"
+            android:fontFamily="@font/junge"
+            android:stateListAnimator="@animator/scale_on_click"
+            android:text="Enregistrer"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toTopOf="@+id/guideline"
+            app:layout_constraintEnd_toStartOf="@+id/guideline5"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="@+id/guideline4" />
+
+        <Button
+            android:fontFamily="@font/junge"
+            android:id="@+id/btnMofication"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="-2dp"
+            android:backgroundTint="#F4CE14"
+            android:elevation="8dp"
+            android:stateListAnimator="@animator/scale_on_click"
+            android:text="Modifier"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@+id/guideline"
+            app:layout_constraintEnd_toStartOf="@+id/guideline5"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="@+id/guideline4"
+            app:layout_constraintTop_toBottomOf="@+id/editEmail"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="32dp" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="535dp" />
+
+        <Button
+            android:id="@+id/btnConfNouvMdp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#F4CE14"
+            android:elevation="8dp"
+            android:fontFamily="@font/junge"
+            android:stateListAnimator="@animator/scale_on_click"
+            android:text="Changer Mon Mot De Passe"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@+id/guideline3"
+            app:layout_constraintEnd_toStartOf="@+id/guideline5"
+            app:layout_constraintHorizontal_bias="0.496"
+            app:layout_constraintStart_toStartOf="@+id/guideline4"
+            app:layout_constraintTop_toTopOf="@+id/guideline3" />
+
+        <Button
+            android:id="@+id/btnEnvoyerMDP"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="-23dp"
+            android:backgroundTint="#F4CE14"
+            android:elevation="8dp"
+            android:fontFamily="@font/junge"
+            android:stateListAnimator="@animator/scale_on_click"
+            android:text="Enregistrer"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toTopOf="@+id/guideline3"
+            app:layout_constraintEnd_toStartOf="@+id/guideline5"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="@+id/guideline4">
+
+        </Button>
+
+        <EditText
+            android:fontFamily="@font/junge"
+            android:id="@+id/editMDP"
+            android:layout_width="323dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="56dp"
+            android:background="@drawable/input_box"
+            android:elevation="8dp"
+            android:enabled="false"
+            android:gravity="center"
+            android:hint="@string/mot_de_passe"
+            android:inputType="textPersonName"
+            android:padding="12dp"
+            android:stateListAnimator="@animator/scale_on_click"
+            android:textColor="@android:color/black"
+            android:textColorHint="#000000"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toStartOf="@+id/guideline5"
+            app:layout_constraintHorizontal_bias="0.489"
+            app:layout_constraintStart_toStartOf="@+id/guideline4"
+            app:layout_constraintTop_toTopOf="@+id/guideline"
+            tools:ignore="MissingConstraints,TextContrastCheck" />
+
+        <EditText
+            android:fontFamily="@font/junge"
+            android:id="@+id/editNouvMDP"
+            android:layout_width="323dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/input_box"
+            android:elevation="8dp"
+            android:enabled="false"
+            android:gravity="center"
+            android:hint="@string/nouveau_mot_de_passe"
+            android:inputType="textPersonName"
+            android:padding="12dp"
+            android:stateListAnimator="@animator/scale_on_click"
+            android:textColor="@android:color/black"
+            android:textColorHint="#000000"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toStartOf="@+id/guideline5"
+            app:layout_constraintStart_toStartOf="@+id/guideline4"
+            app:layout_constraintTop_toBottomOf="@+id/editMDP"
+            tools:ignore="MissingConstraints,TextContrastCheck" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="331dp" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="20dp" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="20dp" />
+
+        <TextView
+            android:id="@+id/txtMessageConf"
+            android:layout_width="339dp"
+            android:layout_height="24dp"
+            android:gravity="center"
+            android:text=" "
+            app:layout_constraintBottom_toTopOf="@+id/guideline2"
+            app:layout_constraintEnd_toStartOf="@+id/guideline5"
+            app:layout_constraintStart_toStartOf="@+id/guideline4"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="SpeakableTextPresentCheck" />
+
+        <TextView
+            android:id="@+id/txtMessageConfMdp"
+            android:layout_width="339dp"
+            android:layout_height="24dp"
+            android:layout_marginBottom="12dp"
+            android:gravity="center"
+            android:text=" "
+            app:layout_constraintBottom_toTopOf="@+id/editMDP"
+            app:layout_constraintEnd_toStartOf="@+id/guideline5"
+            app:layout_constraintHorizontal_bias="0.484"
+            app:layout_constraintStart_toStartOf="@+id/guideline4"
+            tools:ignore="SpeakableTextPresentCheck" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</LinearLayout>

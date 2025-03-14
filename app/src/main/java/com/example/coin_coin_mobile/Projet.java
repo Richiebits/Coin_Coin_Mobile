@@ -1,14 +1,24 @@
 package com.example.coin_coin_mobile;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-public class Projet extends AppCompatActivity {
+public class Projet extends AppCompatActivity implements View.OnClickListener {
+    private ImageButton btnRetour;
+    private ActivityResultLauncher<Intent> aRL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,5 +30,26 @@ public class Projet extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        btnRetour = (ImageButton) findViewById(R.id.btnRetour);
+        btnRetour.setOnClickListener(this);
+
+        aRL = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(androidx.activity.result.ActivityResult result) {
+
+                    }
+                }
+        );
+
+
+    }
+
+    @Override
+    public void onClick(View v) {
+        Intent intent = new Intent(Projet.this, Compte.class);
+
+        aRL.launch(intent);
     }
 }
