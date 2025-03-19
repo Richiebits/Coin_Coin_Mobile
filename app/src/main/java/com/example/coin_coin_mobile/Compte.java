@@ -4,13 +4,19 @@ import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -20,6 +26,11 @@ public class Compte extends AppCompatActivity implements View.OnClickListener{
     private EditText editNom, editPrenom, editEmail, editMDP, editNouvMDP, editMDPModif;
     private Button btnModifier, btnEnvoyerModif, btnEnvoyerMDP, btnConfNouvMdp;
     private TextView txtConf,txtMessageConfMdp;
+
+    private ImageButton btnRetour;
+
+    private ActivityResultLauncher<Intent> aRL;
+
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -32,6 +43,7 @@ public class Compte extends AppCompatActivity implements View.OnClickListener{
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
 
         editNom=(EditText) findViewById(R.id.editNom);
         editPrenom=(EditText) findViewById(R.id.editPrenom);
@@ -49,11 +61,31 @@ public class Compte extends AppCompatActivity implements View.OnClickListener{
         btnConfNouvMdp.setOnClickListener(this);
         txtMessageConfMdp = (TextView) findViewById(R.id.txtMessageConfMdp);
         editMDPModif = (EditText) findViewById(R.id.editMDPModif);
+        btnRetour= (ImageButton) findViewById(R.id.btnRetour);
+        btnRetour.setOnClickListener(this);
+
+
+
+
+        aRL = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(androidx.activity.result.ActivityResult result) {
+
+                    }
+                }
+        );
     }
 
     @SuppressLint("SetTextI18n")
     @Override
     public void onClick(View v) {
+        if(v == btnRetour){
+            Intent intent = new Intent(Compte.this, PageGraphique.class);
+
+            aRL.launch(intent);
+        }
         if(v == btnModifier){
             editNom.setEnabled(true);
             editPrenom.setEnabled(true);
