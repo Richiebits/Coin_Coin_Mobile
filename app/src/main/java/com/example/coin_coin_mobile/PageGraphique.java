@@ -1,6 +1,7 @@
 package com.example.coin_coin_mobile;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.LinearGradient;
@@ -12,9 +13,14 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.HorizontalScrollView;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -39,9 +45,11 @@ public class PageGraphique extends AppCompatActivity implements View.OnClickList
     private HorizontalScrollView horizontalScrollView;
     private GestureDetector gestureDetector;
     private boolean isSwiping = false;
+    private ImageButton btnRetour;
     private static final int SWIPE_THRESHOLD_VELOCITY = 500;
     private static final int SWIPE_MIN_DISTANCE = 50;
     private static final int SWIPE_MAX_DISTANCE = 400;
+    private ActivityResultLauncher<Intent> aRL;
 
     private float montantObjectif = 1000f;
 
@@ -56,6 +64,17 @@ public class PageGraphique extends AppCompatActivity implements View.OnClickList
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        btnRetour = (ImageButton) findViewById(R.id.btnRetour);
+        btnRetour.setOnClickListener(this);
+        aRL = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(androidx.activity.result.ActivityResult result) {
+
+                    }
+                }
+        );
         chargerScrollHorizontal();
         //Le graphique
         LineChart lineChart = (LineChart) findViewById(R.id.lineChart);
@@ -131,7 +150,10 @@ public class PageGraphique extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onClick(View v) {
-        //Clique sur les cartes
+        if(v==btnRetour) {
+            Intent intent = new Intent(PageGraphique.this, Projet.class);
+            aRL.launch(intent);
+        }
     }
     @SuppressLint("ClickableViewAccessibility")
     public void chargerScrollHorizontal(){
