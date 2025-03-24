@@ -4,6 +4,7 @@ import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -11,15 +12,23 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import java.util.Objects;
+
 public class Compte extends AppCompatActivity implements View.OnClickListener{
     private EditText editNom, editPrenom, editEmail, editMDP, editNouvMDP, editMDPModif;
     private Button btnModifier, btnEnvoyerModif, btnEnvoyerMDP, btnConfNouvMdp;
     private TextView txtConf,txtMessageConfMdp;
+
+    private ActivityResultLauncher<Intent> activityResultLauncher;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -32,6 +41,13 @@ public class Compte extends AppCompatActivity implements View.OnClickListener{
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                    }
+                });
 
         editNom=(EditText) findViewById(R.id.editNom);
         editPrenom=(EditText) findViewById(R.id.editPrenom);
@@ -49,6 +65,7 @@ public class Compte extends AppCompatActivity implements View.OnClickListener{
         btnConfNouvMdp.setOnClickListener(this);
         txtMessageConfMdp = (TextView) findViewById(R.id.txtMessageConfMdp);
         editMDPModif = (EditText) findViewById(R.id.editMDPModif);
+
     }
 
     @SuppressLint("SetTextI18n")

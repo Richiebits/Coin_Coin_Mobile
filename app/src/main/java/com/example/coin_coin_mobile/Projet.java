@@ -48,8 +48,9 @@ public class Projet extends AppCompatActivity implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        Intent intent = new Intent(Projet.this, Compte.class);
-
-        aRL.launch(intent);
+        if(v==btnRetour) {
+            Intent intent = new Intent(Projet.this, PageAccueil.class);
+            aRL.launch(intent);
+        }
     }
 }
