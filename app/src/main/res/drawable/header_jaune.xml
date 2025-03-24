@@ -9,9 +9,6 @@
     <path
         android:fillColor="#FCDE70"
         android:pathData="M 0,0 L 200,0 L 200,195 L 0,155 Z" />
-
-
-
     <path
         android:fillColor="@android:color/white"
         android:pathData="M 200,200 L 0,200 L 0,160 L 200,200 Z" />

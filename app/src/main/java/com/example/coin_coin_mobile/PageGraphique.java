@@ -2,6 +2,10 @@ package com.example.coin_coin_mobile;
 
 import android.annotation.SuppressLint;
 import android.content.res.Resources;
+import android.graphics.Color;
+import android.graphics.LinearGradient;
+import android.graphics.Shader;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -16,6 +20,20 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.ValueFormatter;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Locale;
+
 public class PageGraphique extends AppCompatActivity implements View.OnClickListener {
     private LinearLayout carteLayout;
     private HorizontalScrollView horizontalScrollView;
@@ -24,6 +42,8 @@ public class PageGraphique extends AppCompatActivity implements View.OnClickList
     private static final int SWIPE_THRESHOLD_VELOCITY = 500;
     private static final int SWIPE_MIN_DISTANCE = 50;
     private static final int SWIPE_MAX_DISTANCE = 400;
+
+    private float montantObjectif = 1000f;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -36,7 +56,85 @@ public class PageGraphique extends AppCompatActivity implements View.OnClickList
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        chargerScrollHorizontal();
+        //Le graphique
+        LineChart lineChart = (LineChart) findViewById(R.id.lineChart);
 
+        //Tableau avec les donnes a mettre dans le tableau
+        ArrayList<Entry> entries = new ArrayList<>();
+        // Donnee random
+        for (int i = 0; i < 50; i++) {
+            float yValue = (float) (Math.random() * 1000);
+            entries.add(new Entry(i, yValue));
+        }
+        //La ligne dans le graphique
+        LineDataSet lineDataSet = new LineDataSet(entries, "Maths");
+        lineDataSet.setColor(Color.rgb(244, 206, 20));
+        lineDataSet.setValueTextColor(Color.BLACK);
+        lineDataSet.setLineWidth(2f);
+        lineDataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+        lineDataSet.setCubicIntensity(0.2f);
+        lineDataSet.setCircleColor(Color.BLACK);
+        lineDataSet.setCircleHoleColor(Color.rgb(244, 206, 20));
+        //Sous la ligne
+        lineDataSet.setCubicIntensity(0.2f);
+        lineDataSet.setDrawFilled(true);
+        GradientDrawable drawable = new GradientDrawable(
+                GradientDrawable.Orientation.TOP_BOTTOM,
+                new int[]{Color.argb(75, 244, 206, 20), Color.argb(0, 244, 206, 20)}
+        );
+        lineDataSet.setFillDrawable(drawable);
+        LineData lineData = new LineData(lineDataSet);
+
+        //X
+        XAxis xAxis = lineChart.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setGranularity(1f);
+        xAxis.setLabelRotationAngle(45);
+        xAxis.setTextSize(12f);
+        xAxis.setAxisMinimum(1);
+        xAxis.setAxisMaximum(50); //Date objectif fin ======
+        xAxis.setDrawGridLines(false);
+        // Info sur l'axe x
+        SimpleDateFormat sdf = new SimpleDateFormat("dd MMM");
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(2025, Calendar.MARCH, 1); //Date du debut
+        xAxis.setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getAxisLabel(float value, AxisBase axis) {
+                Calendar tempCalendar = (Calendar) calendar.clone();
+                tempCalendar.add(Calendar.DAY_OF_YEAR, (int) value);
+                return sdf.format(tempCalendar.getTime());
+            }
+        });
+
+        // Y
+        YAxis leftAxis = lineChart.getAxisLeft();
+        leftAxis.setTextSize(14f);
+        leftAxis.setAxisMinimum(0f);
+        leftAxis.setAxisMaximum(montantObjectif); // Objectif ==========
+        leftAxis.setDrawGridLines(true);
+        leftAxis.setGranularity(100f);
+        //Ajouter $
+        leftAxis.setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value) {
+                return "$" + (int) value;
+            }
+        });
+        lineChart.getAxisRight().setEnabled(false);
+        lineChart.getDescription().setEnabled(false);
+        lineChart.setData(lineData);
+        lineChart.invalidate();
+
+    }
+
+    @Override
+    public void onClick(View v) {
+        //Clique sur les cartes
+    }
+    @SuppressLint("ClickableViewAccessibility")
+    public void chargerScrollHorizontal(){
         carteLayout = findViewById(R.id.carteLayout);
         horizontalScrollView = findViewById(R.id.horizontalScrollView);
         int screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
@@ -131,8 +229,4 @@ public class PageGraphique extends AppCompatActivity implements View.OnClickList
         }
     }
 
-    @Override
-    public void onClick(View v) {
-        //Clique sur les cartes
-    }
 }
