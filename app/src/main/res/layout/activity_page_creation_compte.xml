@@ -72,24 +72,26 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/vertLayInscription"
-        android:layout_width="409dp"
-        android:layout_height="599dp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         android:layout_marginTop="1dp"
+        android:backgroundTint="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constLayoutTop">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:gravity="center_horizontal"
             android:layout_margin="20dp"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <EditText
                 android:id="@+id/editPrenom"
-                android:layout_width="323dp"
+                android:layout_width="323sp"
                 android:layout_height="48dp"
                 android:layout_marginTop="4dp"
                 android:autofillHints=""
@@ -112,7 +114,7 @@
 
             <EditText
                 android:id="@+id/editNom"
-                android:layout_width="323dp"
+                android:layout_width="323sp"
                 android:layout_height="48dp"
                 android:layout_marginTop="16dp"
                 android:autofillHints=""
@@ -135,7 +137,7 @@
 
             <EditText
                 android:id="@+id/editCourriel"
-                android:layout_width="323dp"
+                android:layout_width="323sp"
                 android:layout_height="48dp"
                 android:layout_marginTop="16dp"
                 android:autofillHints=""
@@ -159,7 +161,7 @@
 
             <EditText
                 android:id="@+id/editTel"
-                android:layout_width="323dp"
+                android:layout_width="323sp"
                 android:layout_height="48dp"
                 android:layout_marginTop="16dp"
                 android:autofillHints=""
@@ -184,7 +186,7 @@
 
             <EditText
                 android:id="@+id/editMDP"
-                android:layout_width="323dp"
+                android:layout_width="323sp"
                 android:layout_height="48dp"
                 android:layout_marginTop="16dp"
                 android:autofillHints=""
@@ -208,7 +210,7 @@
 
             <EditText
                 android:id="@+id/editMDPConfirm"
-                android:layout_width="323dp"
+                android:layout_width="323sp"
                 android:layout_height="48dp"
                 android:layout_marginTop="16dp"
                 android:autofillHints=""
@@ -232,17 +234,17 @@
 
             <Button
                 android:id="@+id/btnConfirmer"
-                android:layout_width="280dp"
+                android:layout_width="280sp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
                 android:layout_marginBottom="-2dp"
                 android:backgroundTint="#F4CE14"
                 android:elevation="8dp"
                 android:fontFamily="@font/junge"
-                android:textColor="@android:color/white"
-                android:textSize="16sp"
                 android:stateListAnimator="@animator/scale_on_click"
-                android:text="@string/confirmer_inscription" />
+                android:text="@string/confirmer_inscription"
+                android:textColor="@android:color/white"
+                android:textSize="16sp" />
 
 
         </LinearLayout>
