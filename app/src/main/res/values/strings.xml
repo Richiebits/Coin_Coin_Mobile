@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Coin Coin</string>
+    <string name="app_name">Coin_Coin_Mobile</string>
     <string name="button">Button</string>
     <string name="todo">TODO</string>
     <string name="mes_projets">Mes Projets</string>
@@ -11,6 +11,7 @@
     <string name="nouveau_mot_de_passe">Nouveau Mot De Passe</string>
     <string name="mes_comptes">Mes Comptes</string>
     <string name="mon_compte">Mon Compte</string>
+    <string name="mon_projet">Mon Projet</string>
     <string name="texteBienvenue">Bienvenue sur \n Coin Coin</string>
     <string name="hintCourriel">Entrez votre adresse courriel</string>
     <string name="hintPassword">Entrez votre mot de passe</string>
