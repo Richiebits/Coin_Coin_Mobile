@@ -12,6 +12,7 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -19,6 +20,7 @@ import androidx.core.view.WindowInsetsCompat;
 public class Projet extends AppCompatActivity implements View.OnClickListener {
     private ImageButton btnRetour;
     private ActivityResultLauncher<Intent> aRL;
+    private CardView carte1Test;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +34,8 @@ public class Projet extends AppCompatActivity implements View.OnClickListener {
         });
         btnRetour = (ImageButton) findViewById(R.id.btnRetour);
         btnRetour.setOnClickListener(this);
+        carte1Test = (CardView) findViewById(R.id.carte1Test);
+        carte1Test.setOnClickListener(this);
 
         aRL = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
@@ -50,6 +54,10 @@ public class Projet extends AppCompatActivity implements View.OnClickListener {
     public void onClick(View v) {
         if(v==btnRetour) {
             Intent intent = new Intent(Projet.this, PageAccueil.class);
+            aRL.launch(intent);
+        }
+        if(v==carte1Test){
+            Intent intent = new Intent(Projet.this, PageGraphique.class);
             aRL.launch(intent);
         }
     }
