@@ -4,11 +4,13 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.VectorDrawable;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -57,8 +59,31 @@ public class PageConnection extends AppCompatActivity implements View.OnClickLis
         LayerDrawable layerDrawable = (LayerDrawable) drawable;
         assert layerDrawable != null;
         Drawable imageLogo = layerDrawable.getDrawable(1);
+        ScalableDrawable scalableDrawable = new ScalableDrawable(imageLogo);
+        scalableDrawable.setScaleFactor(1.4f);
+        layerDrawable.setDrawable(1, scalableDrawable);
         imageLogo.setAlpha(26);
-        topConstraint.setBackground(drawable);
+        scalableDrawable.setInsets(-350, -280, 0, 0);
+        topConstraint.setBackground(layerDrawable);
+        topConstraint.invalidate();
+
+        ConstraintLayout bottomConstraint = findViewById(R.id.constraintLayoutBottom);
+        Drawable drawableBot = ContextCompat.getDrawable(this, R.drawable.layer_list_conn_footer);
+        LayerDrawable layerDrawableBot = (LayerDrawable) drawableBot;
+        assert layerDrawableBot != null;
+        Drawable imageLogoBot = layerDrawableBot.getDrawable(1);
+        ScalableDrawable scalableDrawableBot = new ScalableDrawable(imageLogoBot);
+        scalableDrawableBot.setScaleFactor(2.0f);
+        layerDrawableBot.setDrawable(1, scalableDrawableBot);
+        imageLogoBot.setAlpha(26);
+        scalableDrawableBot.setInsets(-300, -730, 0, 0);
+        bottomConstraint.setBackground(layerDrawableBot);
+        bottomConstraint.invalidate();
+
+
+
+
+
 
 
         activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
