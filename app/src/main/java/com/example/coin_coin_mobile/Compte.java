@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -26,6 +27,7 @@ import java.util.Objects;
 public class Compte extends AppCompatActivity implements View.OnClickListener{
     private EditText editNom, editPrenom, editEmail, editMDP, editNouvMDP, editMDPModif;
     private Button btnModifier, btnEnvoyerModif, btnEnvoyerMDP, btnConfNouvMdp;
+    private ImageButton btnRetour;
     private TextView txtConf,txtMessageConfMdp;
 
     private ActivityResultLauncher<Intent> activityResultLauncher;
@@ -65,12 +67,19 @@ public class Compte extends AppCompatActivity implements View.OnClickListener{
         btnConfNouvMdp.setOnClickListener(this);
         txtMessageConfMdp = (TextView) findViewById(R.id.txtMessageConfMdp);
         editMDPModif = (EditText) findViewById(R.id.editMDPModif);
+        btnRetour = findViewById(R.id.btnRetour);
+        btnRetour.setOnClickListener(this);
 
     }
 
     @SuppressLint("SetTextI18n")
     @Override
     public void onClick(View v) {
+
+        if(v==btnRetour){
+            Intent intent = new Intent(Compte.this,PageAccueil.class);
+            activityResultLauncher.launch(intent);
+        }
         if(v == btnModifier){
             editNom.setEnabled(true);
             editPrenom.setEnabled(true);

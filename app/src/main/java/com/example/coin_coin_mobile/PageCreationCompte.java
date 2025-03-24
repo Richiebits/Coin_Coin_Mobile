@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResult;
@@ -21,6 +22,8 @@ public class PageCreationCompte extends AppCompatActivity implements View.OnClic
     private EditText editNom, editPrenom , editCourriel, editTel, editMDP, editMDPConfirm;
 
     private Button btnConfirmer;
+
+    private ImageButton btnRetour;
 
     private ActivityResultLauncher<Intent> activityResultLauncher;
 
@@ -43,6 +46,9 @@ public class PageCreationCompte extends AppCompatActivity implements View.OnClic
         editMDPConfirm = findViewById(R.id.editMDPConfirm);
         btnConfirmer = findViewById(R.id.btnConfirmer);
         btnConfirmer.setOnClickListener(this);
+        btnRetour = findViewById(R.id.btnRetour);
+        btnRetour.setOnClickListener(this);
+
 
         activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
                 new ActivityResultCallback<ActivityResult>() {
@@ -60,13 +66,18 @@ public class PageCreationCompte extends AppCompatActivity implements View.OnClic
 
         Intent intent = new Intent(PageCreationCompte.this,PageConnection.class);
 
-        String nom = editNom.getText().toString().trim();
-        String prenom = editNom.getText().toString().trim();
-        String courriel = editCourriel.getText().toString().trim();
-        String numTel = editTel.getText().toString().trim();
-        String motDePasse = editMDP.getText().toString().trim();
-        String motDePasseConfirm = editMDPConfirm.getText().toString().trim();
+        if (v==btnConfirmer) {
+            String nom = editNom.getText().toString().trim();
+            String prenom = editNom.getText().toString().trim();
+            String courriel = editCourriel.getText().toString().trim();
+            String numTel = editTel.getText().toString().trim();
+            String motDePasse = editMDP.getText().toString().trim();
+            String motDePasseConfirm = editMDPConfirm.getText().toString().trim();
 
-        activityResultLauncher.launch(intent);
+            activityResultLauncher.launch(intent);
+        }
+        if (v==btnRetour){
+            activityResultLauncher.launch(intent);
+        }
     }
 }
