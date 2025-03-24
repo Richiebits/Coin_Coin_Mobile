@@ -12,4 +12,19 @@
     <string name="mes_comptes">Mes Comptes</string>
     <string name="mon_compte">Mon Compte</string>
     <string name="mon_projet">Mon Projet</string>
+    <string name="texteBienvenue">Bienvenue sur \n Coin Coin</string>
+    <string name="hintCourriel">Entrez votre adresse courriel</string>
+    <string name="hintPassword">Entrez votre mot de passe</string>
+    <string name="seConnecter">Connexion</string>
+    <string name="creerCompte"><u>Créez-vous un compte</u></string>
+    <string name="compte">Compte</string>
+    <string name="projets">Projets</string>
+    <string name ="inscription">Inscription</string>
+    <string name ="prenom">Prénom</string>
+    <string name ="nom">Nom</string>
+    <string name ="courriel">Adresse courriel</string>
+    <string name ="confirmer_mdp">Confirmer votre mot de passe</string>
+    <string name ="num_tel">Numéro de téléphone (Optionnel)</string>
+    <string name ="confirmer_inscription"> Confirmer votre inscription</string>
+
 </resources>

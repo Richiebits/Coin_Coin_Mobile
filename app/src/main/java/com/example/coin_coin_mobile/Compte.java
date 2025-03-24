@@ -22,15 +22,15 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import java.util.Objects;
+
 public class Compte extends AppCompatActivity implements View.OnClickListener{
     private EditText editNom, editPrenom, editEmail, editMDP, editNouvMDP, editMDPModif;
     private Button btnModifier, btnEnvoyerModif, btnEnvoyerMDP, btnConfNouvMdp;
+    private ImageButton btnRetour;
     private TextView txtConf,txtMessageConfMdp;
 
-    private ImageButton btnRetour;
-
-    private ActivityResultLauncher<Intent> aRL;
-
+    private ActivityResultLauncher<Intent> activityResultLauncher;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -44,6 +44,12 @@ public class Compte extends AppCompatActivity implements View.OnClickListener{
             return insets;
         });
 
+        activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                    }
+                });
 
         editNom=(EditText) findViewById(R.id.editNom);
         editPrenom=(EditText) findViewById(R.id.editPrenom);
@@ -61,30 +67,18 @@ public class Compte extends AppCompatActivity implements View.OnClickListener{
         btnConfNouvMdp.setOnClickListener(this);
         txtMessageConfMdp = (TextView) findViewById(R.id.txtMessageConfMdp);
         editMDPModif = (EditText) findViewById(R.id.editMDPModif);
-        btnRetour= (ImageButton) findViewById(R.id.btnRetour);
+        btnRetour = findViewById(R.id.btnRetour);
         btnRetour.setOnClickListener(this);
 
-
-
-
-        aRL = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                new ActivityResultCallback<ActivityResult>() {
-                    @Override
-                    public void onActivityResult(androidx.activity.result.ActivityResult result) {
-
-                    }
-                }
-        );
     }
 
     @SuppressLint("SetTextI18n")
     @Override
     public void onClick(View v) {
-        if(v == btnRetour){
-            Intent intent = new Intent(Compte.this, PageGraphique.class);
 
-            aRL.launch(intent);
+        if(v==btnRetour){
+            Intent intent = new Intent(Compte.this,PageAccueil.class);
+            activityResultLauncher.launch(intent);
         }
         if(v == btnModifier){
             editNom.setEnabled(true);
