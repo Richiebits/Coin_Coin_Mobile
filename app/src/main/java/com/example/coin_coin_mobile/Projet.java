@@ -47,7 +47,6 @@ public class Projet extends AppCompatActivity implements View.OnClickListener {
                 }
         );
 
-
     }
 
     @Override
