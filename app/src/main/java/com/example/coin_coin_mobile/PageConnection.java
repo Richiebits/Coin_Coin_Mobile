@@ -1,5 +1,11 @@
 package com.example.coin_coin_mobile;
-
+import android.os.Handler;
+import android.os.Looper;
+import android.util.Log;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -16,6 +22,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResult;
@@ -28,6 +35,10 @@ import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 
 public class PageConnection extends AppCompatActivity implements View.OnClickListener{
 
@@ -80,31 +91,51 @@ public class PageConnection extends AppCompatActivity implements View.OnClickLis
         bottomConstraint.setBackground(layerDrawableBot);
         bottomConstraint.invalidate();
 
-
-
-
-
-
-
         activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
                 new ActivityResultCallback<ActivityResult>() {
                     @Override
                     public void onActivityResult(ActivityResult result) {
-
                     }
                 });
-
 
     }
 
     @Override
     public void onClick(View v) {
         if (v==btnConnexion){
-            Intent intentConnexion = new Intent (PageConnection.this,PageAccueil.class);
-            activityResultLauncher.launch(intentConnexion);
+            String email = editTextCourriel.getText().toString();
+            String password = editTextPassword.getText().toString();
+            String jsonBody = "{\"email\":\"" + email + "\", \"mot_de_passe\":\"" + password + "\"}";
+
+            FetchApi.fetchData("client/connexion",
+                            "POST", jsonBody, new OnDataFetchedListener() {
+                @Override
+                public void onSuccess(String data) throws JSONException {
+                    if (!data.equalsIgnoreCase("false")){
+
+                        JSONObject JsonData = new JSONObject(data);
+                        String id = JsonData.getString("id");
+
+                        Intent intentConnexion = new Intent(PageConnection.this,PageAccueil.class);
+                        intentConnexion.putExtra("USER_ID", id );
+                        activityResultLauncher.launch(intentConnexion);
+                    } else {
+                        System.out.println("mauvais password");
+                    }
+                }
+
+                @Override
+                public void onError(String error) {
+                    Log.e("ERROR", "Fetch error: " + error);
+                }
+            });
+
+
+
+
         }
         if (v==txtViewCreation){
-            Intent intentCreation = new Intent (PageConnection.this,PageCreationCompte.class);
+            Intent intentCreation = new Intent(PageConnection.this,PageCreationCompte.class);
             intentCreation.putExtra("keyCreate","create");
             activityResultLauncher.launch(intentCreation);
         }
