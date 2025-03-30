@@ -125,16 +125,11 @@ public class PageConnection extends AppCompatActivity implements View.OnClickLis
                                 Toast.LENGTH_SHORT).show();
                     }
                 }
-
                 @Override
                 public void onError(String error) {
                     Log.e("ERROR", "Fetch error: " + error);
                 }
             });
-
-
-
-
         }
         if (v==txtViewCreation){
             Intent intentCreation = new Intent(PageConnection.this,PageCreationCompte.class);
