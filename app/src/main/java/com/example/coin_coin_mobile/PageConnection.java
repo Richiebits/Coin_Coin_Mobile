@@ -120,7 +120,9 @@ public class PageConnection extends AppCompatActivity implements View.OnClickLis
                         intentConnexion.putExtra("USER_ID", id );
                         activityResultLauncher.launch(intentConnexion);
                     } else {
-                        System.out.println("mauvais password");
+                        editTextPassword.setText("");
+                        Toast.makeText(PageConnection.this, "Mot de passe incorrect!",
+                                Toast.LENGTH_SHORT).show();
                     }
                 }
 
