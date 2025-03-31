@@ -22,6 +22,7 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -49,6 +50,8 @@ public class PageGraphique extends AppCompatActivity implements View.OnClickList
     private static final int SWIPE_THRESHOLD_VELOCITY = 500;
     private static final int SWIPE_MIN_DISTANCE = 50;
     private static final int SWIPE_MAX_DISTANCE = 400;
+
+    private CardView btnDepense, btnRevenu, btnDate, btnConfig;
     private ActivityResultLauncher<Intent> aRL;
 
     private float montantObjectif = 1000f;
@@ -66,6 +69,8 @@ public class PageGraphique extends AppCompatActivity implements View.OnClickList
         });
         btnRetour = (ImageButton) findViewById(R.id.btnRetour);
         btnRetour.setOnClickListener(this);
+        btnDepense = (CardView) findViewById(R.id.btnDepense);
+        btnDepense.setOnClickListener(this);
         aRL = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 new ActivityResultCallback<ActivityResult>() {
@@ -76,75 +81,10 @@ public class PageGraphique extends AppCompatActivity implements View.OnClickList
                 }
         );
         chargerScrollHorizontal();
-        //Le graphique
-        LineChart lineChart = (LineChart) findViewById(R.id.lineChart);
+        chargerGraphique();
 
-        //Tableau avec les donnes a mettre dans le tableau
-        ArrayList<Entry> entries = new ArrayList<>();
-        // Donnee random
-        for (int i = 0; i < 50; i++) {
-            float yValue = (float) (Math.random() * 1000);
-            entries.add(new Entry(i, yValue));
-        }
-        //La ligne dans le graphique
-        LineDataSet lineDataSet = new LineDataSet(entries, "Maths");
-        lineDataSet.setColor(Color.rgb(244, 206, 20));
-        lineDataSet.setValueTextColor(Color.BLACK);
-        lineDataSet.setLineWidth(2f);
-        lineDataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
-        lineDataSet.setCubicIntensity(0.2f);
-        lineDataSet.setCircleColor(Color.BLACK);
-        lineDataSet.setCircleHoleColor(Color.rgb(244, 206, 20));
-        //Sous la ligne
-        lineDataSet.setCubicIntensity(0.2f);
-        lineDataSet.setDrawFilled(true);
-        GradientDrawable drawable = new GradientDrawable(
-                GradientDrawable.Orientation.TOP_BOTTOM,
-                new int[]{Color.argb(75, 244, 206, 20), Color.argb(0, 244, 206, 20)}
-        );
-        lineDataSet.setFillDrawable(drawable);
-        LineData lineData = new LineData(lineDataSet);
 
-        //X
-        XAxis xAxis = lineChart.getXAxis();
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setGranularity(1f);
-        xAxis.setLabelRotationAngle(45);
-        xAxis.setTextSize(12f);
-        xAxis.setAxisMinimum(1);
-        xAxis.setAxisMaximum(50); //Date objectif fin ======
-        xAxis.setDrawGridLines(false);
-        // Info sur l'axe x
-        SimpleDateFormat sdf = new SimpleDateFormat("dd MMM");
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(2025, Calendar.MARCH, 1); //Date du debut
-        xAxis.setValueFormatter(new ValueFormatter() {
-            @Override
-            public String getAxisLabel(float value, AxisBase axis) {
-                Calendar tempCalendar = (Calendar) calendar.clone();
-                tempCalendar.add(Calendar.DAY_OF_YEAR, (int) value);
-                return sdf.format(tempCalendar.getTime());
-            }
-        });
 
-        // Y
-        YAxis leftAxis = lineChart.getAxisLeft();
-        leftAxis.setTextSize(14f);
-        leftAxis.setAxisMinimum(0f);
-        leftAxis.setAxisMaximum(montantObjectif); // Objectif ==========
-        leftAxis.setDrawGridLines(true);
-        leftAxis.setGranularity(100f);
-        //Ajouter $
-        leftAxis.setValueFormatter(new ValueFormatter() {
-            @Override
-            public String getFormattedValue(float value) {
-                return "$" + (int) value;
-            }
-        });
-        lineChart.getAxisRight().setEnabled(false);
-        lineChart.getDescription().setEnabled(false);
-        lineChart.setData(lineData);
-        lineChart.invalidate();
 
     }
 
@@ -152,6 +92,10 @@ public class PageGraphique extends AppCompatActivity implements View.OnClickList
     public void onClick(View v) {
         if(v==btnRetour) {
             Intent intent = new Intent(PageGraphique.this, Projet.class);
+            aRL.launch(intent);
+        }
+        if(v == btnDepense){
+            Intent intent = new Intent(PageGraphique.this, PageListe.class);
             aRL.launch(intent);
         }
     }
@@ -249,6 +193,77 @@ public class PageGraphique extends AppCompatActivity implements View.OnClickList
         } else {
             Log.e("MainActivity", "Error: layoutCarte or horizontalScrollView is null.");
         }
+    }
+    public void chargerGraphique(){
+        //Le graphique
+        LineChart lineChart = (LineChart) findViewById(R.id.lineChart);
+
+        //Tableau avec les donnes a mettre dans le tableau
+        ArrayList<Entry> entries = new ArrayList<>();
+        // Donnee random
+        for (int i = 0; i < 50; i++) {
+            float yValue = (float) (Math.random() * 1000);
+            entries.add(new Entry(i, yValue));
+        }
+        //La ligne dans le graphique
+        LineDataSet lineDataSet = new LineDataSet(entries, "Maths");
+        lineDataSet.setColor(Color.rgb(244, 206, 20));
+        lineDataSet.setValueTextColor(Color.BLACK);
+        lineDataSet.setLineWidth(2f);
+        lineDataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+        lineDataSet.setCubicIntensity(0.2f);
+        lineDataSet.setCircleColor(Color.BLACK);
+        lineDataSet.setCircleHoleColor(Color.rgb(244, 206, 20));
+        //Sous la ligne
+        lineDataSet.setCubicIntensity(0.2f);
+        lineDataSet.setDrawFilled(true);
+        GradientDrawable drawable = new GradientDrawable(
+                GradientDrawable.Orientation.TOP_BOTTOM,
+                new int[]{Color.argb(75, 244, 206, 20), Color.argb(0, 244, 206, 20)}
+        );
+        lineDataSet.setFillDrawable(drawable);
+        LineData lineData = new LineData(lineDataSet);
+
+        //X
+        XAxis xAxis = lineChart.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setGranularity(1f);
+        xAxis.setLabelRotationAngle(45);
+        xAxis.setTextSize(12f);
+        xAxis.setAxisMinimum(1);
+        xAxis.setAxisMaximum(50); //Date objectif fin ======
+        xAxis.setDrawGridLines(false);
+        // Info sur l'axe x
+        SimpleDateFormat sdf = new SimpleDateFormat("dd MMM");
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(2025, Calendar.MARCH, 1); //Date du debut
+        xAxis.setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getAxisLabel(float value, AxisBase axis) {
+                Calendar tempCalendar = (Calendar) calendar.clone();
+                tempCalendar.add(Calendar.DAY_OF_YEAR, (int) value);
+                return sdf.format(tempCalendar.getTime());
+            }
+        });
+
+        // Y
+        YAxis leftAxis = lineChart.getAxisLeft();
+        leftAxis.setTextSize(14f);
+        leftAxis.setAxisMinimum(0f);
+        leftAxis.setAxisMaximum(montantObjectif); // Objectif ==========
+        leftAxis.setDrawGridLines(true);
+        leftAxis.setGranularity(100f);
+        //Ajouter $
+        leftAxis.setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value) {
+                return "$" + (int) value;
+            }
+        });
+        lineChart.getAxisRight().setEnabled(false);
+        lineChart.getDescription().setEnabled(false);
+        lineChart.setData(lineData);
+        lineChart.invalidate();
     }
 
 }

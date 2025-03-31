@@ -19,12 +19,12 @@
     <string name="creerCompte"><u>Créez-vous un compte</u></string>
     <string name="compte">Compte</string>
     <string name="projets">Projets</string>
-    <string name ="inscription">Inscription</string>
-    <string name ="prenom">Prénom</string>
-    <string name ="nom">Nom</string>
-    <string name ="courriel">Adresse courriel</string>
-    <string name ="confirmer_mdp">Confirmer votre mot de passe</string>
-    <string name ="num_tel">Numéro de téléphone (Optionnel)</string>
-    <string name ="confirmer_inscription"> Confirmer votre inscription</string>
+    <string name="inscription">Inscription</string>
+    <string name="prenom">Prénom</string>
+    <string name="nom">Nom</string>
+    <string name="courriel">Adresse courriel</string>
+    <string name="confirmer_mdp">Confirmer votre mot de passe</string>
+    <string name="num_tel">Numéro de téléphone (Optionnel)</string>
+    <string name="confirmer_inscription"> Confirmer votre inscription</string>
 
 </resources>

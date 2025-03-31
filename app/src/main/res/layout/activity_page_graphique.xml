@@ -99,7 +99,8 @@
             android:paddingBottom="16dp">
 
             <androidx.cardview.widget.CardView
-
+                android:stateListAnimator="@animator/scale_on_click"
+                android:id="@+id/btnDepense"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -162,6 +163,8 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
+                android:stateListAnimator="@animator/scale_on_click"
+                android:id="@+id/btnRevenu"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -224,6 +227,8 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
+                android:stateListAnimator="@animator/scale_on_click"
+                android:id="@+id/btnDate"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -286,6 +291,8 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
+                android:stateListAnimator="@animator/scale_on_click"
+                android:id="@+id/btnConfig"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
