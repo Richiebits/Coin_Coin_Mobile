@@ -1,5 +1,6 @@
 package com.example.coin_coin_mobile;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -18,11 +19,14 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class PageAccueil extends AppCompatActivity implements View.OnClickListener{
 
 
     private Button btnAccueilProjets,btnCompteView;
-    private TextView txtViewCAccueil;
+    private TextView txtViewAccueil;
     private ActivityResultLauncher<Intent> activityResultLauncher;
 
     @Override
@@ -36,10 +40,35 @@ public class PageAccueil extends AppCompatActivity implements View.OnClickListen
             return insets;
         });
 
+
+        Intent intent = getIntent();
+        String id = intent.getStringExtra("USER_ID");
+        txtViewAccueil = findViewById(R.id.tvAccueil);
         btnAccueilProjets = findViewById(R.id.btnProjet);
         btnAccueilProjets.setOnClickListener(this);
         btnCompteView = findViewById(R.id.btnCompte);
         btnCompteView.setOnClickListener(this);
+
+
+        String route = "client/" + id;
+
+        FetchApi.fetchData(route, "GET", null, new OnDataFetchedListener() {
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void onSuccess(String data) throws JSONException {
+                JSONObject JsonData = new JSONObject(data);
+                System.out.println(JsonData);
+                String nom = JsonData.getString("nom");
+                String prenom = JsonData.getString("prenom");
+                txtViewAccueil.setText("Bon Retour, " + prenom + " " + nom + "!");
+
+            }
+
+            @Override
+            public void onError(String error) {
+
+            }
+        });
 
         activityResultLauncher =registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
                 new ActivityResultCallback<ActivityResult>(){

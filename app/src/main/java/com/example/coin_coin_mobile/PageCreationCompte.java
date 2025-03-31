@@ -2,10 +2,12 @@ package com.example.coin_coin_mobile;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResult;
@@ -16,6 +18,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import org.json.JSONException;
+
+import java.util.regex.Pattern;
 
 public class PageCreationCompte extends AppCompatActivity implements View.OnClickListener {
 
@@ -68,13 +74,41 @@ public class PageCreationCompte extends AppCompatActivity implements View.OnClic
 
         if (v==btnConfirmer) {
             String nom = editNom.getText().toString().trim();
-            String prenom = editNom.getText().toString().trim();
+            String prenom = editPrenom.getText().toString().trim();
             String courriel = editCourriel.getText().toString().trim();
             String numTel = editTel.getText().toString().trim();
             String motDePasse = editMDP.getText().toString().trim();
             String motDePasseConfirm = editMDPConfirm.getText().toString().trim();
+            if (!nom.isEmpty() && !prenom.isEmpty() && !courriel.isEmpty() && !motDePasse.isEmpty()){
+                String regex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$";
+                if (motDePasse.equals(motDePasseConfirm) && Pattern.matches(regex, motDePasse)){
+                    String jsonBody =   "{\"email\":\"" + courriel + "\"," +
+                                        " \"nom\":\"" + nom + "\"," +
+                                        " \"prenom\":\"" + prenom + "\"," +
+                                        " \"tel\":\"" + numTel + "\"," +
+                                        " \"mot_de_passe\":\"" + motDePasse + "\"}";
 
-            activityResultLauncher.launch(intent);
+                    FetchApi.fetchData("client", "POST", jsonBody, new OnDataFetchedListener() {
+                        @Override
+                        public void onSuccess(String data) throws JSONException {
+                            Toast.makeText(PageCreationCompte.this,
+                                    "Compte créé avec succès", Toast.LENGTH_SHORT).show();
+                            activityResultLauncher.launch(intent);
+                        }
+
+                        @Override
+                        public void onError(String error) {
+                            Log.e("ERROR", "POST error: " + error);
+                        }
+                    });
+                } else {
+                    Toast.makeText(PageCreationCompte.this,
+                            "Le mot de passe doit etre 8 charactères et doit contenir 1 nbr, 1 spc char, 1 caps", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                Toast.makeText(PageCreationCompte.this,
+                            "Veuillez remplir tout les champs obligatoire!", Toast.LENGTH_SHORT).show();
+            }
         }
         if (v==btnRetour){
             activityResultLauncher.launch(intent);
