@@ -6,11 +6,13 @@ import static android.view.View.VISIBLE;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResult;
@@ -22,6 +24,9 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.Objects;
 
 public class Compte extends AppCompatActivity implements View.OnClickListener{
@@ -29,6 +34,8 @@ public class Compte extends AppCompatActivity implements View.OnClickListener{
     private Button btnModifier, btnEnvoyerModif, btnEnvoyerMDP, btnConfNouvMdp;
     private ImageButton btnRetour;
     private TextView txtConf,txtMessageConfMdp;
+    private String id, email;
+
 
     private ActivityResultLauncher<Intent> activityResultLauncher;
 
@@ -51,24 +58,44 @@ public class Compte extends AppCompatActivity implements View.OnClickListener{
                     }
                 });
 
-        editNom=(EditText) findViewById(R.id.editNom);
-        editPrenom=(EditText) findViewById(R.id.editPrenom);
-        editEmail=(EditText) findViewById(R.id.editEmail);
-        btnModifier=(Button) findViewById(R.id.btnMofication);
+        editNom = findViewById(R.id.editNom);
+        editPrenom = findViewById(R.id.editPrenom);
+        editEmail = findViewById(R.id.editEmail);
+        btnModifier = findViewById(R.id.btnMofication);
         btnModifier.setOnClickListener(this);
-        btnEnvoyerModif=(Button) findViewById(R.id.btnEnvoyerModif);
+        btnEnvoyerModif = findViewById(R.id.btnEnvoyerModif);
         btnEnvoyerModif.setOnClickListener(this);
-        txtConf = (TextView) findViewById(R.id.txtMessageConf);
-        btnEnvoyerMDP = (Button) findViewById(R.id.btnEnvoyerMDP);
+        txtConf =  findViewById(R.id.txtMessageConf);
+        btnEnvoyerMDP = findViewById(R.id.btnEnvoyerMDP);
         btnEnvoyerMDP.setOnClickListener(this);
-        editMDP=(EditText) findViewById(R.id.editMDP);
-        editNouvMDP=(EditText) findViewById(R.id.editNouvMDP);
-        btnConfNouvMdp = (Button) findViewById(R.id.btnConfNouvMdp);
+        editMDP = findViewById(R.id.editMDP);
+        editNouvMDP = findViewById(R.id.editNouvMDP);
+        btnConfNouvMdp = findViewById(R.id.btnConfNouvMdp);
         btnConfNouvMdp.setOnClickListener(this);
-        txtMessageConfMdp = (TextView) findViewById(R.id.txtMessageConfMdp);
-        editMDPModif = (EditText) findViewById(R.id.editMDPModif);
+        txtMessageConfMdp = findViewById(R.id.txtMessageConfMdp);
+        editMDPModif = findViewById(R.id.editMDPModif);
         btnRetour = findViewById(R.id.btnRetour);
         btnRetour.setOnClickListener(this);
+
+        Intent intent = getIntent();
+        this.id = intent.getStringExtra("USER_ID");
+        String route = "client/" + id;
+        FetchApi.fetchData(route, "GET", null, new OnDataFetchedListener() {
+            @Override
+            public void onSuccess(String data) throws JSONException {
+                JSONObject JsonData = new JSONObject(data);
+                editNom.setText(JsonData.getString("nom"));
+                editPrenom.setText(JsonData.getString("prenom"));
+                editEmail.setText(JsonData.getString("email"));
+                email = JsonData.getString("email");
+                System.out.println(email);
+            }
+
+            @Override
+            public void onError(String error) {
+                Log.e("ERROR", "GET error: " + error);
+            }
+        });
 
     }
 
@@ -101,7 +128,53 @@ public class Compte extends AppCompatActivity implements View.OnClickListener{
             editEmail.setEnabled(false);
             //----
             //Envoyer les infos a la data base ici
-            txtConf.setText("La data Base n'est pas connectee");
+            String nomModif = editNom.getText().toString();
+            String prenomModif = editPrenom.getText().toString();
+            String emailmodif = editEmail.getText().toString();
+            String telModif = "";
+            String MDP = editMDPModif.getText().toString();
+            String jsonBodyConn = "{\"email\":\"" + email + "\", \"mot_de_passe\":\"" + MDP + "\"}";
+            FetchApi.fetchData("client/connexion", "POST", jsonBodyConn, new OnDataFetchedListener() {
+                @Override
+                public void onSuccess(String data) throws JSONException {
+                    if (!data.equalsIgnoreCase("false")){
+                        String route = "client/" + id;
+                        String jsonBodyModif =   "{\"email\":\"" + emailmodif + "\"," +
+                                " \"nom\":\"" + nomModif + "\"," +
+                                " \"prenom\":\"" + prenomModif + "\"," +
+                                " \"tel\":\"" + telModif + "\"," +
+                                " \"mot_de_passe\":\"" + MDP + "\"}";
+                        FetchApi.fetchData(route, "PUT", jsonBodyModif, new OnDataFetchedListener() {
+                            @Override
+                            public void onSuccess(String data) throws JSONException {
+                                Toast.makeText(Compte.this, "Le compte à été modifié!",
+                                        Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onError(String error) {
+                                Toast.makeText(Compte.this, "Error API",
+                                        Toast.LENGTH_SHORT).show();
+                                Log.e("ERROR", "Fetch error: " + error);
+                            }
+                        });
+                    } else {
+                        editMDPModif.setText("");
+                        Toast.makeText(Compte.this, "Mot de passe incorrect!",
+                                Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+
+                @Override
+                public void onError(String error) {
+                    Toast.makeText(Compte.this, "Error API",
+                            Toast.LENGTH_SHORT).show();
+                    Log.e("ERROR", "Fetch error: " + error);
+                }
+            });
+
+
             //----
         }
         if(v==btnConfNouvMdp){
@@ -121,7 +194,7 @@ public class Compte extends AppCompatActivity implements View.OnClickListener{
             btnConfNouvMdp.setVisibility(VISIBLE);
             //----
             //Envoyer les infos a la data base ici
-            txtMessageConfMdp.setText("La data Base n'est pas connectee");
+
             //----
         }
     }

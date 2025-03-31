@@ -28,7 +28,8 @@ public class FetchApi {
                 conn.setRequestProperty("Content-Type", "application/json");
                 conn.setRequestProperty("Accept", "application/json");
 
-                if (method.equalsIgnoreCase("POST") && jsonBody != null){
+                if ((method.equalsIgnoreCase("POST") ||
+                        method.equalsIgnoreCase("PUT")) && jsonBody != null){
                     conn.setDoOutput(true);
                     try (OutputStream os = conn.getOutputStream()){
                         byte[] input = jsonBody.getBytes(StandardCharsets.UTF_8);
