@@ -53,7 +53,7 @@ public class PageListe extends AppCompatActivity implements View.OnClickListener
 
         switch(Objects.requireNonNull(type)){
             case "Depot":
-                titre.setText("Dépots");
+                titre.setText(R.string.depots);
 
                 DepotDao dao = DepotDao.getInstance(dates, montants);
                 List<Depot> listeDesDepots = dao.getDepots();
@@ -64,7 +64,7 @@ public class PageListe extends AppCompatActivity implements View.OnClickListener
                 break;
 
             case "Retrait" :
-                titre.setText("Retraits");
+                titre.setText(R.string.retraits);
                 RetraitDao daoRe = RetraitDao.getInstance(dates, montants);
                 List<Retrait> listeDesRetraits = daoRe.getRetraits();
                 RetraitAdapter adapterRe;

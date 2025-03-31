@@ -47,7 +47,7 @@ public class PageGraphique extends AppCompatActivity implements View.OnClickList
     private GestureDetector gestureDetector;
     private boolean isSwiping = false;
     private ImageButton btnRetour;
-    private static final int SWIPE_THRESHOLD_VELOCITY = 500;
+    private static final int SWIPE_THRESHOLD_VELOCITY = 300;
     private static final int SWIPE_MIN_DISTANCE = 50;
     private static final int SWIPE_MAX_DISTANCE = 400;
 

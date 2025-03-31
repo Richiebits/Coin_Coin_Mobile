@@ -26,5 +26,8 @@
     <string name="confirmer_mdp">Confirmer votre mot de passe</string>
     <string name="num_tel">Numéro de téléphone (Optionnel)</string>
     <string name="confirmer_inscription"> Confirmer votre inscription</string>
+    <string name="depots">Dépots</string>
+    <string name="retraits">Retraits</string>
+    <string name="numtel">NumTel</string>
 
 </resources>
