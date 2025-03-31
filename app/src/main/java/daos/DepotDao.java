@@ -2,22 +2,22 @@ package daos;
 
 import java.util.ArrayList;
 import java.util.List;
-import modele.Depense;
+import modele.Depot;
 
 
-public class DepenseDao {
-    private static DepenseDao instance = null;
-    private List<Depense> depenses = new ArrayList<>();
+public class DepotDao {
+    private static DepotDao instance = null;
+    private List<Depot> depots = new ArrayList<>();
 
-    public static DepenseDao getInstance(String[] dates, int[] montants) {
+    public static DepotDao getInstance(String[] dates, int[] montants) {
         if (instance == null)
-            instance = new DepenseDao(dates, montants);
+            instance = new DepotDao(dates, montants);
         return instance;
     }
 
 
-    private DepenseDao(String[] dates, int[] montants) {
-        Depense d;
+    private DepotDao(String[] dates, int[] montants) {
+        Depot d;
 //        String[] dates = {
 //                "2023-01-05", "2023-01-12", "2023-01-18", "2023-01-25", "2023-02-03",
 //                "2023-02-10", "2023-02-17", "2023-02-24", "2023-03-05", "2023-03-12",
@@ -41,27 +41,19 @@ public class DepenseDao {
 //        };
 
         for (int i = 0; i < montants.length; i++) {
-            d = new Depense((i + 1) + "", dates[i], montants[i] + "");
-            depenses.add(d);
+            d = new Depot((i + 1) + "", dates[i], montants[i] + "");
+            depots.add(d);
         }
     }
 
-    /**
-     * Méthode qui retourne la Liste complète des personnes
-     * @return List<Personne> - Liste des personnes enregistrées
-     */
-    public List<Depense> getDepenses() {
-        return depenses;
+    public List<Depot> getDepots() {
+        return depots;
     }
 
-    /**
-     * Méthode qui recherche et retourne une depense par son ID
-     * @param id - Identifiant de la depense recherchée
-     * @return Depense - l'objet correspondant à l'ID, ou null si non trouvé
-     */
-    public Depense getDepense(String id) {
-        Depense d = null;
-        for (Depense dep : depenses)
+
+    public Depot getDepots(String id) {
+        Depot d = null;
+        for (Depot dep : depots)
             if (dep.getId().equals(id))
                 d = dep;
         return d;

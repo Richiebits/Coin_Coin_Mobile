@@ -51,7 +51,7 @@ public class PageGraphique extends AppCompatActivity implements View.OnClickList
     private static final int SWIPE_MIN_DISTANCE = 50;
     private static final int SWIPE_MAX_DISTANCE = 400;
 
-    private CardView btnDepense, btnRevenu, btnDate, btnConfig;
+    private CardView btnDepot, btnRetrait, btnDate, btnConfig;
     private ActivityResultLauncher<Intent> aRL;
 
     private float montantObjectif = 1000f;
@@ -69,8 +69,10 @@ public class PageGraphique extends AppCompatActivity implements View.OnClickList
         });
         btnRetour = (ImageButton) findViewById(R.id.btnRetour);
         btnRetour.setOnClickListener(this);
-        btnDepense = (CardView) findViewById(R.id.btnDepense);
-        btnDepense.setOnClickListener(this);
+        btnDepot = (CardView) findViewById(R.id.btnDepot);
+        btnDepot.setOnClickListener(this);
+        btnRetrait = (CardView) findViewById(R.id.btnRetrait);
+        btnRetrait.setOnClickListener(this);
         aRL = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 new ActivityResultCallback<ActivityResult>() {
@@ -94,8 +96,14 @@ public class PageGraphique extends AppCompatActivity implements View.OnClickList
             Intent intent = new Intent(PageGraphique.this, Projet.class);
             aRL.launch(intent);
         }
-        if(v == btnDepense){
+        if(v == btnDepot){
             Intent intent = new Intent(PageGraphique.this, PageListe.class);
+            intent.putExtra("TYPE", "Depot");
+            aRL.launch(intent);
+        }
+        if(v == btnRetrait){
+            Intent intent = new Intent(PageGraphique.this, PageListe.class);
+            intent.putExtra("TYPE", "Retrait");
             aRL.launch(intent);
         }
     }
