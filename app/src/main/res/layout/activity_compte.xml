@@ -76,7 +76,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingBottom="100dp"
+            android:paddingBottom="500dp"
             android:background="@color/white">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -178,6 +178,7 @@
 
                 <EditText
                     android:id="@+id/editMDPModif"
+                    android:inputType="textPassword"
                     android:layout_width="323dp"
                     android:layout_height="48dp"
                     android:layout_marginTop="16dp"
@@ -188,7 +189,6 @@
                     android:fontFamily="@font/junge"
                     android:gravity="center"
                     android:hint="Mot De Passe pour modifier"
-                    android:inputType="textPersonName"
                     android:padding="12dp"
                     android:stateListAnimator="@animator/scale_on_click"
                     android:textColor="@android:color/black"
@@ -290,6 +290,7 @@
                 </Button>
 
                 <EditText
+                    android:inputType="textPassword"
                     android:id="@+id/editMDP"
                     android:layout_width="323dp"
                     android:layout_height="48dp"
@@ -300,7 +301,6 @@
                     android:fontFamily="@font/junge"
                     android:gravity="center"
                     android:hint="@string/mot_de_passe"
-                    android:inputType="textPersonName"
                     android:padding="12dp"
                     android:stateListAnimator="@animator/scale_on_click"
                     android:textColor="@android:color/black"
@@ -313,6 +313,7 @@
                     tools:ignore="MissingConstraints,TextContrastCheck" />
 
                 <EditText
+                    android:inputType="textPassword"
                     android:id="@+id/editNouvMDP"
                     android:layout_width="323dp"
                     android:layout_height="48dp"
@@ -323,7 +324,6 @@
                     android:fontFamily="@font/junge"
                     android:gravity="center"
                     android:hint="@string/nouveau_mot_de_passe"
-                    android:inputType="textPersonName"
                     android:padding="12dp"
                     android:stateListAnimator="@animator/scale_on_click"
                     android:textColor="@android:color/black"
