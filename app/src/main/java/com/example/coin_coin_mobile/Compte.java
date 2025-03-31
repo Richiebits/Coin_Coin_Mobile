@@ -30,7 +30,7 @@ import org.json.JSONObject;
 import java.util.Objects;
 
 public class Compte extends AppCompatActivity implements View.OnClickListener{
-    private EditText editNom, editPrenom, editEmail, editMDP, editNouvMDP, editMDPModif;
+    private EditText editNom, editPrenom, editEmail, editMDP, editNouvMDP, editMDPModif, editNumTel;
     private Button btnModifier, btnEnvoyerModif, btnEnvoyerMDP, btnConfNouvMdp;
     private ImageButton btnRetour;
     private TextView txtConf,txtMessageConfMdp;
@@ -76,6 +76,7 @@ public class Compte extends AppCompatActivity implements View.OnClickListener{
         editMDPModif = findViewById(R.id.editMDPModif);
         btnRetour = findViewById(R.id.btnRetour);
         btnRetour.setOnClickListener(this);
+        editNumTel = (EditText) findViewById(R.id.editNumTel);
 
         Intent intent = getIntent();
         this.id = intent.getStringExtra("USER_ID");
@@ -112,6 +113,7 @@ public class Compte extends AppCompatActivity implements View.OnClickListener{
             editPrenom.setEnabled(true);
             editEmail.setEnabled(true);
             editMDPModif.setEnabled(true);
+            editNumTel.setEnabled(true);
             btnModifier.setEnabled(false);
             btnModifier.setVisibility(INVISIBLE);
             btnEnvoyerModif.setEnabled(true);
@@ -126,6 +128,7 @@ public class Compte extends AppCompatActivity implements View.OnClickListener{
             editNom.setEnabled(false);
             editPrenom.setEnabled(false);
             editEmail.setEnabled(false);
+            editNumTel.setEnabled(false);
             //----
             //Envoyer les infos a la data base ici
             String nomModif = editNom.getText().toString();

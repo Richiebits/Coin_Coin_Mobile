@@ -123,13 +123,19 @@ public class PageConnection extends AppCompatActivity implements View.OnClickLis
                         editTextPassword.setText("");
                         Toast.makeText(PageConnection.this, "Mot de passe incorrect!",
                                 Toast.LENGTH_SHORT).show();
+
                     }
+
                 }
                 @Override
                 public void onError(String error) {
                     Log.e("ERROR", "Fetch error: " + error);
                 }
             });
+            // A ENLEVER --- BYPASS
+            Intent intentConnexion = new Intent(PageConnection.this,PageAccueil.class);
+            activityResultLauncher.launch(intentConnexion);
+            //A ENLEVER
         }
         if (v==txtViewCreation){
             Intent intentCreation = new Intent(PageConnection.this,PageCreationCompte.class);

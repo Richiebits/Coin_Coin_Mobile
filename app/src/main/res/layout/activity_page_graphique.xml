@@ -100,7 +100,7 @@
 
             <androidx.cardview.widget.CardView
                 android:stateListAnimator="@animator/scale_on_click"
-                android:id="@+id/btnDepense"
+                android:id="@+id/btnDepot"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -164,7 +164,7 @@
 
             <androidx.cardview.widget.CardView
                 android:stateListAnimator="@animator/scale_on_click"
-                android:id="@+id/btnRevenu"
+                android:id="@+id/btnRetrait"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"

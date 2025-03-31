@@ -1,23 +1,36 @@
 package com.example.coin_coin_mobile;
 
+import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import java.util.List;
+import java.util.Objects;
 
-import adapteur.DepenseAdapter;
-import daos.DepenseDao;
-import modele.Depense;
+import adapteur.DepotAdapter;
+import adapteur.RetraitAdapter;
+import daos.DepotDao;
+import daos.RetraitDao;
+import modele.Depot;
+import modele.Retrait;
 
-public class PageListe extends AppCompatActivity {
+public class PageListe extends AppCompatActivity implements View.OnClickListener {
     private ListView lv;
+    private ImageButton btnRetour;
+    private ActivityResultLauncher<Intent> aRL;
 
+    private TextView titre;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,15 +41,50 @@ public class PageListe extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        btnRetour = (ImageButton) findViewById(R.id.btnRetour);
+        btnRetour.setOnClickListener(this);
+        titre=(TextView) findViewById(R.id.txtTitre);
+
+        Intent intent = getIntent();
+        String type = intent.getStringExtra("TYPE");
+
         String[] dates = getResources().getStringArray(R.array.dates);
         int[] montants = getResources().getIntArray(R.array.montants);
 
-        DepenseDao dao = DepenseDao.getInstance(dates, montants);
-        List<Depense> listeDesPersonnes = dao.getDepenses();
-        DepenseAdapter adapter;
-        adapter = new DepenseAdapter(this, R.layout.depense_layout, listeDesPersonnes);
-        lv = (ListView) findViewById(R.id.lvPersonnes);
-        lv.setAdapter(adapter);
+        switch(Objects.requireNonNull(type)){
+            case "Depot":
+                titre.setText(R.string.depots);
 
+                DepotDao dao = DepotDao.getInstance(dates, montants);
+                List<Depot> listeDesDepots = dao.getDepots();
+                DepotAdapter adapterDe;
+                adapterDe = new DepotAdapter(this, R.layout.depense_layout, listeDesDepots);
+                lv = (ListView) findViewById(R.id.lvPersonnes);
+                lv.setAdapter(adapterDe);
+                break;
+
+            case "Retrait" :
+                titre.setText(R.string.retraits);
+                RetraitDao daoRe = RetraitDao.getInstance(dates, montants);
+                List<Retrait> listeDesRetraits = daoRe.getRetraits();
+                RetraitAdapter adapterRe;
+                adapterRe = new RetraitAdapter(this, R.layout.depense_layout, listeDesRetraits);
+                lv = (ListView) findViewById(R.id.lvPersonnes);
+                lv.setAdapter(adapterRe);
+                break;
+        }
+
+
+
+
+
+    }
+
+    @Override
+    public void onClick(View v) {
+    if(v == btnRetour){
+        Intent intent = new Intent(PageListe.this, PageGraphique.class);
+        aRL.launch(intent);
+    }
     }
 }

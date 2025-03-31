@@ -1,9 +1,9 @@
 package modele;
 
-public class Depense {
+public class Depot {
     private String id, date, montant;
 
-    public Depense(String id, String date, String montant){
+    public Depot(String id, String date, String montant){
         this.id = id;
         this.date = date;
         this.montant = montant;

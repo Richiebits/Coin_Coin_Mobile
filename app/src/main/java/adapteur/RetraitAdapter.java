@@ -3,38 +3,37 @@ package adapteur;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.coin_coin_mobile.R;
 
-import modele.Depense;
 import java.util.List;
+import modele.Retrait;
 
-public class DepenseAdapter extends ArrayAdapter<Depense> {
-    private List<Depense> depenses;  // Liste des personnes à afficher
+public class RetraitAdapter extends ArrayAdapter<Retrait> {
+    private List<Retrait> retraits;  // Liste des personnes à afficher
     private Context contexte;  // Contexte de l'application
     private int viewResourceId;  // Identifiant de la mise en page des éléments de la Liste
     private Resources ressources;  // Accès aux ressources de l'application
 
-    public DepenseAdapter(@NonNull Context contexte, int viewResourceId, @NonNull List<Depense> depenses) {
-        super(contexte, viewResourceId, depenses);
+    public RetraitAdapter(@NonNull Context contexte, int viewResourceId, @NonNull List<Retrait> retraits) {
+        super(contexte, viewResourceId, retraits);
         this.contexte = contexte;
         this.viewResourceId = viewResourceId;
         this.ressources = contexte.getResources();
-        this.depenses = depenses;
+        this.retraits = retraits;
     }
 
     @Override
     public int getCount() {
-        return this.depenses.size();
+        return this.retraits.size();
     }
 
 
@@ -50,19 +49,19 @@ public class DepenseAdapter extends ArrayAdapter<Depense> {
             view = layoutInflater.inflate(this.viewResourceId, parent, false);
         }
 
-        // Récupération de l'objet depenses correspondant à la position actuelle
-        final Depense depense = this.depenses.get(position);
+        // Récupération de l'objet retraits correspondant à la position actuelle
+        final Retrait retrait = this.retraits.get(position);
 
-        if (depense != null) {
+        if (retrait != null) {
             // Récupération des éléments graphiques définis dans le fichier XML de mise en page
             final TextView tvId = view.findViewById(R.id.tvId);
             final TextView tvDate = view.findViewById(R.id.tvDate);
             final TextView tvMontant = view.findViewById(R.id.tvMontant);
 
             // Affectation des valeurs aux TextViews
-            tvId.setText(depense.getId());
-            tvDate.setText(depense.getDate());
-            tvMontant.setText(depense.getMontant());
+            tvId.setText(retrait.getId());
+            tvDate.setText(retrait.getDate());
+            tvMontant.setText(retrait.getMontant());
 
         }
         return view; // Retourne la vue modifiée pour affichage dans la liste
