@@ -19,6 +19,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class Projet extends AppCompatActivity implements View.OnClickListener {
     private ImageButton btnRetour;
+    private Button btnAjouter;
     private ActivityResultLauncher<Intent> aRL;
     private CardView carte1Test;
 
@@ -34,6 +35,9 @@ public class Projet extends AppCompatActivity implements View.OnClickListener {
         });
         btnRetour = (ImageButton) findViewById(R.id.btnRetour);
         btnRetour.setOnClickListener(this);
+        btnAjouter = findViewById(R.id.btnAjouterProjet);
+        btnAjouter.setOnClickListener(this);
+
         carte1Test = (CardView) findViewById(R.id.carte1Test);
         carte1Test.setOnClickListener(this);
 
@@ -57,6 +61,10 @@ public class Projet extends AppCompatActivity implements View.OnClickListener {
         }
         if(v==carte1Test){
             Intent intent = new Intent(Projet.this, PageGraphique.class);
+            aRL.launch(intent);
+        }
+        if(v==btnAjouter) {
+            Intent intent = new Intent(Projet.this,PageAjouterProjet.class);
             aRL.launch(intent);
         }
     }

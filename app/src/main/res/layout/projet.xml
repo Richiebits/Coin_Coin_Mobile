@@ -69,6 +69,15 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <Button
+        android:id="@+id/btnAjouterProjet"
+        android:layout_width="70sp"
+        android:layout_height="wrap_content"
+        android:textSize="24sp"
+        android:layout_gravity="center_horizontal"
+        android:backgroundTint="#3c852d"
+        android:text="@string/ajouterProjet" />
+
     <ScrollView
         android:id="@+id/ConteneurScroll"
         android:layout_width="match_parent"

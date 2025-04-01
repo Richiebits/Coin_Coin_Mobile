@@ -29,5 +29,13 @@
     <string name="depots">Dépots</string>
     <string name="retraits">Retraits</string>
     <string name="numtel">NumTel</string>
+    <string name="ajouterProjet">+</string>
+    <string name="txtAjouterProjet">Ajouter un projet</string>
+    <string name="nomProjet">Nom du projet</string>
+    <string name="montantCible">Montant cible</string>
+    <string name="radioTemps">Selon le temps</string>
+    <string name="radioBudget">Selon le budget</string>
+    <string name="dateCible">Date cible</string>
+    <string name="montantDepot">Dépôt</string>
 
 </resources>
