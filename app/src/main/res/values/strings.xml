@@ -37,5 +37,12 @@
     <string name="radioBudget">Selon le budget</string>
     <string name="dateCible">Date cible</string>
     <string name="montantDepot">Dépôt</string>
+    <string name="montantRetrait">Retrait</string>
+    <string name="creationProjet">Créer</string>
+    <string name="elie">Élie Tremblay</string>
+    <string name="justin">Justin Lavoie-Ladouceur</string>
+    <string name="louis">Louis-Simon Leclerc</string>
+    <string name="niko">Nikola Sunjka</string>
+    <string name="gab">Gabriel Loubier</string>
 
 </resources>

@@ -154,6 +154,7 @@
                         android:layout_weight="1"
                         android:fontFamily="@font/galindo"
                         android:textStyle="bold"
+                        android:buttonTint="#3c852d"
                         android:text="@string/radioTemps" />
 
                     <RadioButton
@@ -161,25 +162,24 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-
+                        android:buttonTint="#3c852d"
                         android:fontFamily="@font/galindo"
                         android:textStyle="bold"
                         android:text="@string/radioBudget" />
                 </RadioGroup>
 
-                <EditText
-                    android:id="@+id/editDate"
+                <TextView
+                    android:id="@+id/txtViewDate"
                     android:layout_width="323sp"
                     android:layout_height="48dp"
                     android:layout_marginTop="16sp"
                     android:autofillHints=""
                     android:background="@drawable/input_box"
                     android:elevation="8dp"
-                    android:enabled="true"
+                    android:enabled="false"
                     android:fontFamily="@font/junge"
                     android:gravity="center"
                     android:hint="@string/dateCible"
-                    android:inputType="date"
                     android:padding="12dp"
                     android:stateListAnimator="@animator/scale_on_click"
                     android:textColor="@android:color/black"
@@ -195,12 +195,12 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
+
                     android:layout_marginTop="16sp"
                     android:orientation="horizontal">
                     <EditText
                         android:id="@+id/editDepot"
-                        android:layout_width="100sp"
+                        android:layout_width="120sp"
                         android:layout_height="wrap_content"
                         android:autofillHints=""
                         android:background="@drawable/input_box"
@@ -211,7 +211,8 @@
                         android:hint="@string/montantDepot"
                         android:inputType="date"
                         android:padding="12dp"
-                        android:layout_marginStart="55sp"
+                        android:layout_marginEnd="10sp"
+                        android:layout_marginStart="45sp"
                         android:stateListAnimator="@animator/scale_on_click"
                         android:textColor="@android:color/black"
                         android:textColorHint="#000000"
@@ -224,24 +225,61 @@
 
                     <Spinner
                         android:id="@+id/spnFrequenceDepot"
-                        android:layout_width="0dp"
+                        android:layout_width="210sp"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/galindo"
                         android:textStyle="bold"
-                        android:layout_weight="1" />
+                        android:layout_marginEnd="50sp"
+                         />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16sp"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/editRetrait"
+                        android:layout_width="120sp"
+                        android:autofillHints=""
+                        android:background="@drawable/input_box"
+                        android:elevation="8dp"
+                        android:enabled="true"
+                        android:fontFamily="@font/junge"
+                        android:gravity="center"
+                        android:hint="@string/montantRetrait"
+                        android:padding="12dp"
+                        android:layout_marginStart="45sp"
+                        android:stateListAnimator="@animator/scale_on_click"
+                        android:textColor="@android:color/black"
+                        android:textColorHint="#000000"
+                        android:textSize="16sp"
+                        android:layout_marginEnd="10sp"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        tools:ignore="MissingConstraints,TextContrastCheck"
+                        />
+
+                    <Spinner
+                        android:id="@+id/spnFrequenceRetrait"
+                        android:layout_width="210sp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="50sp"
+                         />
                 </LinearLayout>
 
                 <Button
-                    android:id="@+id/btnConfirmer"
-                    android:layout_width="280sp"
+                    android:id="@+id/btnCreerProjet"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
                     android:layout_marginBottom="-2dp"
-                    android:backgroundTint="#F4CE14"
+                    android:backgroundTint="#3c852d"
                     android:elevation="8dp"
                     android:fontFamily="@font/junge"
                     android:stateListAnimator="@animator/scale_on_click"
-                    android:text="@string/confirmer_inscription"
+                    android:text="@string/creationProjet"
                     android:textColor="@android:color/white"
                     android:textSize="16sp" />
 

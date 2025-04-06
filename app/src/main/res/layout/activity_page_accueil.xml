@@ -105,5 +105,69 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
+        <LinearLayout
+            android:id="@+id/layoutHorAccueil"
+            android:layout_width="409dp"
+            android:layout_height="118dp"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/github_logo" />
+
+            <LinearLayout
+                android:id="@+id/layoutVertNoms"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/txtNomElie"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/galindo"
+                    android:text="@string/elie"
+                    android:textColor="@color/white" />
+
+                <TextView
+                    android:id="@+id/txtNomJustin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/galindo"
+                    android:text="@string/justin"
+                    android:textColor="@color/white" />
+
+                <TextView
+                    android:id="@+id/txtNomLouis"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/galindo"
+                    android:text="@string/louis"
+                    android:textColor="@color/white" />
+
+                <TextView
+                    android:id="@+id/txtNomNiko"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/galindo"
+                    android:text="@string/niko"
+                    android:textColor="@color/white" />
+
+                <TextView
+                    android:id="@+id/txtNomGab"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/galindo"
+                    android:text="@string/gab"
+                    android:textColor="@color/white" />
+            </LinearLayout>
+        </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

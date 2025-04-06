@@ -8,6 +8,7 @@ import android.view.ViewStub;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResult;
@@ -82,6 +83,7 @@ public class PageAccueil extends AppCompatActivity implements View.OnClickListen
     public void onClick(View v) {
         if (v==btnAccueilProjets){
             Intent intent = new Intent (PageAccueil.this,Projet.class);
+            intent.putExtra("USER_ID",this.id);
             activityResultLauncher.launch(intent);
         }
         if (v==btnCompteView){
