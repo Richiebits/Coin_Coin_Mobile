@@ -132,10 +132,7 @@ public class PageConnection extends AppCompatActivity implements View.OnClickLis
                     Log.e("ERROR", "Fetch error: " + error);
                 }
             });
-            // A ENLEVER --- BYPASS
-            Intent intentConnexion = new Intent(PageConnection.this,PageAccueil.class);
-            activityResultLauncher.launch(intentConnexion);
-            //A ENLEVER
+
         }
         if (v==txtViewCreation){
             Intent intentCreation = new Intent(PageConnection.this,PageCreationCompte.class);
