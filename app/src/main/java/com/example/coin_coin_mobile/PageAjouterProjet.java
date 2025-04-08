@@ -48,6 +48,27 @@ public class PageAjouterProjet extends AppCompatActivity implements View.OnClick
     private String[] frequence;
     private ActivityResultLauncher<Intent> activityResultLauncher;
 
+    private static int getRecurrence(Spinner spn){
+        String recurrence = spn.getSelectedItem().toString();
+        int recurrenceIntValue=0;
+        switch (recurrence){
+            case "Mensuel":
+                recurrenceIntValue = 30;
+                break;
+            case "Hebdomadaire":
+                recurrenceIntValue = 7;
+                break;
+            case "Bi-hebdomadaire":
+                recurrenceIntValue =14;
+                break;
+            case "Annuellement":
+                recurrenceIntValue = 365;
+                break;
+
+        }
+        return recurrenceIntValue;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -143,8 +164,15 @@ public class PageAjouterProjet extends AppCompatActivity implements View.OnClick
                     new DatePickerDialog.OnDateSetListener() {
                         @Override
                         public void onDateSet(android.widget.DatePicker view, int selectedYear, int selectedMonth, int selectedDay) {
-
-                            String formattedDate = selectedYear + "-" + (selectedMonth + 1) + "-" + selectedDay;
+                            String formattedDay = selectedDay + "";
+                            String formattedMonth = selectedMonth + "";
+                            if (selectedMonth<10){
+                                formattedMonth = "0" + (selectedMonth +1);
+                            }
+                            if (selectedDay<10){
+                                formattedDay = "0" + selectedDay;
+                            }
+                            String formattedDate = selectedYear + "-" + formattedMonth + "-" + formattedDay;
                             textViewDateCible.setText(formattedDate);
                         }
                     },
@@ -177,7 +205,37 @@ public class PageAjouterProjet extends AppCompatActivity implements View.OnClick
                         Toast.makeText(this,"La valeur de votre budget ne peut pas être nulle",Toast.LENGTH_SHORT).show();
 
                     }  else {
-                        Toast.makeText(this,getRecurrence(spinnerDepot) + " " + getRecurrence(spinnerRetrait),Toast.LENGTH_SHORT).show();
+                        String dateCible,nomDepot,nomRetrait;
+                        dateCible = null;
+                        nomDepot = null;
+                        nomRetrait = null;
+                        Intent intent = getIntent();
+                        this.id =intent.getStringExtra("USER_ID");
+                        String jsonBodyProjetBudget = "{\"nomProjet\":\"" + nomProjet + "\","
+                                + "\"but_epargne\":\"" + valeurMontantBudget + "\","
+                                + "\"client_id\":\"" + this.id + "\","
+                                + "\"retraits_total\":" + (montantRetrait == null || montantRetrait.isEmpty() ? "null" : montantRetrait) + ","
+                                + "\"depots_total\":" + (montantDepot == null || montantDepot.isEmpty() ? "null" : montantDepot) + ","
+                                + "\"date_fin\":" + (dateCible == null || dateCible.isEmpty() ? "null" : "\"" + dateCible + "\"") + ","
+                                + "\"nomDepot\":" + (nomDepot == null || nomDepot.isEmpty() ? "null" : "\"" + nomDepot + "\"") + ","
+                                + "\"montantDepot\":" + (montantDepot == null || montantDepot.isEmpty() ? "null" : montantDepot) + ","
+                                + "\"depot_recurrence\":" + getRecurrence(spinnerDepot) + ","
+                                + "\"nomRetrait\":" + (nomRetrait == null || nomRetrait.isEmpty() ? "null" : "\"" + nomRetrait + "\"") + ","
+                                + "\"montantRetrait\":" + (montantRetrait == null || montantRetrait.isEmpty() ? "null" : montantRetrait) + ","
+                                + "\"retrait_recurrence\":" + getRecurrence(spinnerRetrait) + "}";
+
+
+                        FetchApi.fetchData("projet", "POST", jsonBodyProjetBudget, new OnDataFetchedListener() {
+                            @Override
+                            public void onSuccess(String data) throws JSONException {
+                                Toast.makeText(PageAjouterProjet.this, "Projet créé avec succès", Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onError(String error) {
+                                Log.e("ERROR", "POST error: " + error);
+                            }
+                        });
                     }
 
                 } if(radioBtnTemps.isSelected()) {
@@ -187,35 +245,34 @@ public class PageAjouterProjet extends AppCompatActivity implements View.OnClick
 
                     } else {
                         Intent intent = getIntent();
-                        this.id =intent.getStringExtra("id");
-                        Toast.makeText(this,"Ve " + id,Toast.LENGTH_LONG).show();
+                        this.id =intent.getStringExtra("USER_ID");
+                        String montantDepot = null;
+                        String montantRetrait = null;
+                        String jsonBodyProjet = "{\"nomProjet\":\"" + nomProjet + "\","
+                                + "\"but_epargne\":\"" + valeurMontantBudget + "\","
+                                + "\"client_id\":\"" + this.id + "\","
+                                + "\"retraits_total\":" + (montantRetrait == null ? "null" : "\"" + montantRetrait + "\"") + ","
+                                + "\"depots_total\":" + (montantDepot == null ? "null" : "\"" + montantDepot + "\"") + ","
+                                + "\"date_fin\":\"" + dateCible + "\"}";
+
+                        FetchApi.fetchData("projet", "POST", jsonBodyProjet, new OnDataFetchedListener() {
+                            @Override
+                            public void onSuccess(String data) throws JSONException {
+                                Toast.makeText(PageAjouterProjet.this, "Projet créé avec succès", Toast.LENGTH_SHORT).show();
+
+                            }
+
+                            @Override
+                            public void onError(String error) {
+                                Log.e("ERROR", "POST error: " + error);
+                            }
+                        });
                     }
                 }
 
             }
 
         }
-    }
-
-    private static int getRecurrence(Spinner spn){
-        String recurrence = spn.getSelectedItem().toString();
-        int recurrenceIntValue=0;
-        switch (recurrence){
-            case "Mensuel":
-                recurrenceIntValue = 30;
-                break;
-            case "Hebdomadaire":
-                recurrenceIntValue = 7;
-                break;
-            case "Bi-hebdomadaire":
-                recurrenceIntValue =14;
-                break;
-            case "Annuellement":
-                recurrenceIntValue = 365;
-                break;
-
-        }
-        return recurrenceIntValue;
     }
 
 

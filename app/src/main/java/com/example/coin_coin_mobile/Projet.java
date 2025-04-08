@@ -41,7 +41,7 @@ public class Projet extends AppCompatActivity implements View.OnClickListener {
         btnAjouter = findViewById(R.id.btnAjouterProjet);
         btnAjouter.setOnClickListener(this);
         Intent intent = getIntent();
-        this.id = intent.getStringExtra("id");
+        this.id = intent.getStringExtra("USER_ID");
         carte1Test = (CardView) findViewById(R.id.carte1Test);
         carte1Test.setOnClickListener(this);
 
@@ -69,7 +69,7 @@ public class Projet extends AppCompatActivity implements View.OnClickListener {
         }
         if(v==btnAjouter) {
             Intent intent = new Intent(Projet.this,PageAjouterProjet.class);
-            intent.putExtra("id",id);
+            intent.putExtra("USER_ID",id);
             aRL.launch(intent);
 
         }

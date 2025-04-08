@@ -63,6 +63,7 @@ public class PageAccueil extends AppCompatActivity implements View.OnClickListen
                 String nom = JsonData.getString("nom");
                 String prenom = JsonData.getString("prenom");
                 txtViewAccueil.setText("Bon Retour, " + prenom + " " + nom + "!");
+
             }
 
             @Override
@@ -83,6 +84,7 @@ public class PageAccueil extends AppCompatActivity implements View.OnClickListen
     public void onClick(View v) {
         if (v==btnAccueilProjets){
             Intent intent = new Intent (PageAccueil.this,Projet.class);
+            Toast.makeText(this,id,Toast.LENGTH_LONG).show();
             intent.putExtra("USER_ID",this.id);
             activityResultLauncher.launch(intent);
         }
