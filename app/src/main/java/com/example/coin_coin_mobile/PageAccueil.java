@@ -8,6 +8,7 @@ import android.view.ViewStub;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResult;
@@ -28,6 +29,7 @@ public class PageAccueil extends AppCompatActivity implements View.OnClickListen
     private Button btnAccueilProjets,btnCompteView;
     private TextView txtViewAccueil;
     private ActivityResultLauncher<Intent> activityResultLauncher;
+    private String id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +44,7 @@ public class PageAccueil extends AppCompatActivity implements View.OnClickListen
 
 
         Intent intent = getIntent();
-        String id = intent.getStringExtra("USER_ID");
+        this.id = intent.getStringExtra("USER_ID");
         txtViewAccueil = findViewById(R.id.tvAccueil);
         btnAccueilProjets = findViewById(R.id.btnProjet);
         btnAccueilProjets.setOnClickListener(this);
@@ -57,7 +59,7 @@ public class PageAccueil extends AppCompatActivity implements View.OnClickListen
             @Override
             public void onSuccess(String data) throws JSONException {
                 JSONObject JsonData = new JSONObject(data);
-                System.out.println(JsonData);
+
                 String nom = JsonData.getString("nom");
                 String prenom = JsonData.getString("prenom");
                 txtViewAccueil.setText("Bon Retour, " + prenom + " " + nom + "!");
@@ -82,10 +84,13 @@ public class PageAccueil extends AppCompatActivity implements View.OnClickListen
     public void onClick(View v) {
         if (v==btnAccueilProjets){
             Intent intent = new Intent (PageAccueil.this,Projet.class);
+            Toast.makeText(this,id,Toast.LENGTH_LONG).show();
+            intent.putExtra("USER_ID",this.id);
             activityResultLauncher.launch(intent);
         }
         if (v==btnCompteView){
             Intent intent = new Intent (PageAccueil.this,Compte.class);
+            intent.putExtra("USER_ID", this.id);
             activityResultLauncher.launch(intent);
         }
     }

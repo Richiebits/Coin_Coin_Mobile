@@ -107,6 +107,7 @@ public class PageConnection extends AppCompatActivity implements View.OnClickLis
             String password = editTextPassword.getText().toString();
             String jsonBody = "{\"email\":\"" + email + "\", \"mot_de_passe\":\"" + password + "\"}";
 
+
             FetchApi.fetchData("client/connexion",
                             "POST", jsonBody, new OnDataFetchedListener() {
                 @Override
@@ -115,7 +116,6 @@ public class PageConnection extends AppCompatActivity implements View.OnClickLis
 
                         JSONObject JsonData = new JSONObject(data);
                         String id = JsonData.getString("id");
-
                         Intent intentConnexion = new Intent(PageConnection.this,PageAccueil.class);
                         intentConnexion.putExtra("USER_ID", id );
                         activityResultLauncher.launch(intentConnexion);
@@ -132,10 +132,7 @@ public class PageConnection extends AppCompatActivity implements View.OnClickLis
                     Log.e("ERROR", "Fetch error: " + error);
                 }
             });
-            // A ENLEVER --- BYPASS
-            Intent intentConnexion = new Intent(PageConnection.this,PageAccueil.class);
-            activityResultLauncher.launch(intentConnexion);
-            //A ENLEVER
+
         }
         if (v==txtViewCreation){
             Intent intentCreation = new Intent(PageConnection.this,PageCreationCompte.class);

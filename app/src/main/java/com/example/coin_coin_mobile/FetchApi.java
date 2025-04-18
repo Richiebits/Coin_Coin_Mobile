@@ -7,6 +7,7 @@ import android.util.Log;
 import org.json.JSONException;
 
 import java.io.BufferedReader;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
@@ -28,7 +29,8 @@ public class FetchApi {
                 conn.setRequestProperty("Content-Type", "application/json");
                 conn.setRequestProperty("Accept", "application/json");
 
-                if (method.equalsIgnoreCase("POST") && jsonBody != null){
+                if ((method.equalsIgnoreCase("POST") ||
+                        method.equalsIgnoreCase("PUT")) && jsonBody != null){
                     conn.setDoOutput(true);
                     try (OutputStream os = conn.getOutputStream()){
                         byte[] input = jsonBody.getBytes(StandardCharsets.UTF_8);
@@ -60,6 +62,14 @@ public class FetchApi {
                     });
 
                 } else {
+                    InputStream errorStream = conn.getErrorStream();
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(errorStream));
+                    String line;
+                    StringBuilder responseBuilder = new StringBuilder();
+                    while ((line = reader.readLine()) != null) {
+                        responseBuilder.append(line);
+                    }
+                    Log.e("POST_ERROR", "Server Error Response: " + responseBuilder.toString());
                     Log.e("API_ERROR", "Response Code: " + responseCode);
                     new Handler(Looper.getMainLooper()).post(() -> listener.onError("Error: " + responseCode));
                 }

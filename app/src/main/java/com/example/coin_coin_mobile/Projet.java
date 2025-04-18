@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResult;
@@ -19,8 +20,11 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class Projet extends AppCompatActivity implements View.OnClickListener {
     private ImageButton btnRetour;
+    private Button btnAjouter;
     private ActivityResultLauncher<Intent> aRL;
     private CardView carte1Test;
+
+    private String id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +38,10 @@ public class Projet extends AppCompatActivity implements View.OnClickListener {
         });
         btnRetour = (ImageButton) findViewById(R.id.btnRetour);
         btnRetour.setOnClickListener(this);
+        btnAjouter = findViewById(R.id.btnAjouterProjet);
+        btnAjouter.setOnClickListener(this);
+        Intent intent = getIntent();
+        this.id = intent.getStringExtra("USER_ID");
         carte1Test = (CardView) findViewById(R.id.carte1Test);
         carte1Test.setOnClickListener(this);
 
@@ -58,6 +66,12 @@ public class Projet extends AppCompatActivity implements View.OnClickListener {
         if(v==carte1Test){
             Intent intent = new Intent(Projet.this, PageGraphique.class);
             aRL.launch(intent);
+        }
+        if(v==btnAjouter) {
+            Intent intent = new Intent(Projet.this,PageAjouterProjet.class);
+            intent.putExtra("USER_ID",id);
+            aRL.launch(intent);
+
         }
     }
 }

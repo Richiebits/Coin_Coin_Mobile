@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/txtViewSpnItem"
+        style="@style/SpinnerTextViewItem"
+        android:layout_width="160sp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/input_box"
+        android:padding="12dp"
+        android:textSize="14sp"
+        android:textColor="@android:color/black"
+        android:gravity="center" />
