@@ -85,9 +85,6 @@ public class PageGraphique extends AppCompatActivity implements View.OnClickList
         chargerScrollHorizontal();
         chargerGraphique();
 
-
-
-
     }
 
     @Override
