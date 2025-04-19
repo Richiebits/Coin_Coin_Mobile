@@ -91,7 +91,6 @@ public class PageAccueil extends AppCompatActivity implements View.OnClickListen
     public void onClick(View v) {
         if (v==btnAccueilProjets){
             Intent intent = new Intent (PageAccueil.this, PageProjet.class);
-            Toast.makeText(this,id,Toast.LENGTH_LONG).show();
             intent.putExtra("USER_ID",this.id);
             intent.putExtra("TOKEN",token);
             activityResultLauncher.launch(intent);

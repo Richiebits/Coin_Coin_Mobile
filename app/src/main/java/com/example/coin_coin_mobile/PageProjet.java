@@ -86,11 +86,9 @@ public class PageProjet extends AppCompatActivity implements View.OnClickListene
     @Override
     protected void onResume() {
         super.onResume();
-
         Intent intent = getIntent();
         this.id = intent.getStringExtra("USER_ID");
         this.token = intent.getStringExtra("TOKEN");
-
         ProjetDao projetDao = ProjetDao.getInstance(id, token);
         projetDao.getProjetsAsync(id, token, new OnDataFetchedListener() {
             @Override
@@ -129,7 +127,7 @@ public class PageProjet extends AppCompatActivity implements View.OnClickListene
     public void onItemClick(AdapterView<?> parent, View view, int position, long idLong) {
         Intent intent = new Intent(this, PageGraphique.class);
         Projet projet = (Projet) parent.getAdapter().getItem(position);
-        intent.putExtra("USER_iD",id);
+        intent.putExtra("USER_ID",id);
         intent.putExtra("TOKEN",token);
         intent.putExtra("PROJET_ID",projet.getId());
         intent.putExtra("PROJET_NOM",projet.getNom());

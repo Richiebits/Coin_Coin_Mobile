@@ -99,9 +99,8 @@ public class PageAjouterProjet extends AppCompatActivity implements View.OnClick
 
         Intent intent = getIntent();
         this.id = intent.getStringExtra("USER_ID");
-        Log.d("DEBUGG",id);
         this.token = intent.getStringExtra("TOKEN");
-        Log.d("DEBUGG",token);
+
 
         radioBtnTemps = findViewById(R.id.radioButtonTemps);
         radioBtnTemps.setOnClickListener(this);

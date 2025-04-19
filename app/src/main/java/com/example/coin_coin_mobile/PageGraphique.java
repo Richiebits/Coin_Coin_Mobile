@@ -97,19 +97,23 @@ public class PageGraphique extends AppCompatActivity implements View.OnClickList
     public void onClick(View v) {
         if(v==btnRetour) {
             Intent intent = new Intent(PageGraphique.this, PageProjet.class);
-            intent.putExtra("USER_iD",id);
+            intent.putExtra("USER_ID",id);
             intent.putExtra("TOKEN",token);
             startActivity(intent);
         }
         if(v == btnDepot){
             Intent intent = new Intent(PageGraphique.this, PageListe.class);
+            intent.putExtra("USER_ID",id);
+            intent.putExtra("TOKEN",token);
             intent.putExtra("TYPE", "Depot");
-            aRL.launch(intent);
+            startActivity(intent);
         }
         if(v == btnRetrait){
             Intent intent = new Intent(PageGraphique.this, PageListe.class);
+            intent.putExtra("USER_ID",id);
+            intent.putExtra("TOKEN",token);
             intent.putExtra("TYPE", "Retrait");
-            aRL.launch(intent);
+            startActivity(intent);
         }
     }
     @SuppressLint("ClickableViewAccessibility")
