@@ -38,6 +38,7 @@ public class PageAccueil extends AppCompatActivity implements View.OnClickListen
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_page_accueil);
@@ -61,8 +62,6 @@ public class PageAccueil extends AppCompatActivity implements View.OnClickListen
         String route = "client/" + id;
         Map<String, String> headers = new HashMap<>();
         headers.put("Authorization", "Bearer " + token);
-
-
         FetchApi.fetchData(route, "GET", null,headers, new OnDataFetchedListener() {
             @SuppressLint("SetTextI18n")
             @Override
@@ -81,10 +80,13 @@ public class PageAccueil extends AppCompatActivity implements View.OnClickListen
             }
         });
 
+
+
         activityResultLauncher =registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
                 new ActivityResultCallback<ActivityResult>(){
                     @Override
                     public void onActivityResult(ActivityResult result) {
+
                     }
                 });
 
@@ -105,4 +107,5 @@ public class PageAccueil extends AppCompatActivity implements View.OnClickListen
             activityResultLauncher.launch(intent);
         }
     }
+
 }

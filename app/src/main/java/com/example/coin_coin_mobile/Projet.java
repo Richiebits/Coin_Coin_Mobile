@@ -62,10 +62,14 @@ public class Projet extends AppCompatActivity implements View.OnClickListener {
     public void onClick(View v) {
         if(v==btnRetour) {
             Intent intent = new Intent(Projet.this, PageAccueil.class);
+            intent.putExtra("USER_ID",id);
+            intent.putExtra("TOKEN",token);
             aRL.launch(intent);
         }
         if(v==carte1Test){
             Intent intent = new Intent(Projet.this, PageGraphique.class);
+            intent.putExtra("USER_ID",id);
+            intent.putExtra("TOKEN",token);
             aRL.launch(intent);
         }
         if(v==btnAjouter) {

@@ -111,6 +111,8 @@ public class Compte extends AppCompatActivity implements View.OnClickListener{
 
         if(v==btnRetour){
             Intent intent = new Intent(Compte.this,PageAccueil.class);
+            intent.putExtra("USER_ID",id);
+            intent.putExtra("TOKEN",token);
             activityResultLauncher.launch(intent);
         }
         if(v == btnModifier){

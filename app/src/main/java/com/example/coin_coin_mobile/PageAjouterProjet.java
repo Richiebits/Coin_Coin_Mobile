@@ -97,6 +97,12 @@ public class PageAjouterProjet extends AppCompatActivity implements View.OnClick
         btnCreer = findViewById(R.id.btnCreerProjet);
         btnCreer.setOnClickListener(this);
 
+        Intent intent = getIntent();
+        this.id = intent.getStringExtra("USER_ID");
+        Log.d("DEBUGG",id);
+        this.token = intent.getStringExtra("TOKEN");
+        Log.d("DEBUGG",token);
+
         radioBtnTemps = findViewById(R.id.radioButtonTemps);
         radioBtnTemps.setOnClickListener(this);
         radioBtnBudget = findViewById(R.id.radioButtonBudget);
@@ -137,6 +143,7 @@ public class PageAjouterProjet extends AppCompatActivity implements View.OnClick
                 }
             }
         });
+
 
 
         spinnerDepot = findViewById(R.id.spnFrequenceDepot);
@@ -186,7 +193,9 @@ public class PageAjouterProjet extends AppCompatActivity implements View.OnClick
 
         if (v==btnRetour){
             Intent intent = new Intent(PageAjouterProjet.this,Projet.class);
-            activityResultLauncher.launch(intent);
+            intent.putExtra("USER_ID",id);
+            intent.putExtra("TOKEN",token);
+            startActivity(intent);
 
         }
         if(v==btnCreer){
