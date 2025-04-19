@@ -27,6 +27,8 @@ import androidx.core.view.WindowInsetsCompat;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 public class Compte extends AppCompatActivity implements View.OnClickListener{
@@ -34,7 +36,7 @@ public class Compte extends AppCompatActivity implements View.OnClickListener{
     private Button btnModifier, btnEnvoyerModif, btnEnvoyerMDP, btnConfNouvMdp;
     private ImageButton btnRetour;
     private TextView txtConf,txtMessageConfMdp;
-    private String id, email;
+    private String id, email,token;
 
 
     private ActivityResultLauncher<Intent> activityResultLauncher;
@@ -80,8 +82,11 @@ public class Compte extends AppCompatActivity implements View.OnClickListener{
 
         Intent intent = getIntent();
         this.id = intent.getStringExtra("USER_ID");
+        this.token = intent.getStringExtra("TOKEN");
         String route = "client/" + id;
-        FetchApi.fetchData(route, "GET", null, new OnDataFetchedListener() {
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Authorization", "Bearer " + token);
+        FetchApi.fetchData(route, "GET", null,headers, new OnDataFetchedListener() {
             @Override
             public void onSuccess(String data) throws JSONException {
                 JSONObject JsonData = new JSONObject(data);
@@ -137,17 +142,22 @@ public class Compte extends AppCompatActivity implements View.OnClickListener{
             String telModif = "";
             String MDP = editMDPModif.getText().toString();
             String jsonBodyConn = "{\"email\":\"" + email + "\", \"mot_de_passe\":\"" + MDP + "\"}";
-            FetchApi.fetchData("client/connexion", "POST", jsonBodyConn, new OnDataFetchedListener() {
+            String route = "client/" + id;
+            Intent intent = getIntent();
+            token = intent.getStringExtra("TOKEN");
+            Map<String, String> headers = new HashMap<>();
+            headers.put("Authorization", "Bearer " + token);
+            FetchApi.fetchData("client/connexion", "POST", jsonBodyConn,headers, new OnDataFetchedListener() {
                 @Override
                 public void onSuccess(String data) throws JSONException {
                     if (!data.equalsIgnoreCase("false")){
-                        String route = "client/" + id;
+
                         String jsonBodyModif =   "{\"email\":\"" + emailmodif + "\"," +
                                 " \"nom\":\"" + nomModif + "\"," +
                                 " \"prenom\":\"" + prenomModif + "\"," +
                                 " \"tel\":\"" + telModif + "\"," +
                                 " \"mot_de_passe\":\"" + MDP + "\"}";
-                        FetchApi.fetchData(route, "PUT", jsonBodyModif, new OnDataFetchedListener() {
+                        FetchApi.fetchData(route, "PUT", jsonBodyModif,headers, new OnDataFetchedListener() {
                             @Override
                             public void onSuccess(String data) throws JSONException {
                                 Toast.makeText(Compte.this, "Le compte à été modifié!",

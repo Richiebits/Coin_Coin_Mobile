@@ -24,7 +24,7 @@ public class Projet extends AppCompatActivity implements View.OnClickListener {
     private ActivityResultLauncher<Intent> aRL;
     private CardView carte1Test;
 
-    private String id;
+    private String id,token;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +42,7 @@ public class Projet extends AppCompatActivity implements View.OnClickListener {
         btnAjouter.setOnClickListener(this);
         Intent intent = getIntent();
         this.id = intent.getStringExtra("USER_ID");
+        this.token = intent.getStringExtra("TOKEN");
         carte1Test = (CardView) findViewById(R.id.carte1Test);
         carte1Test.setOnClickListener(this);
 
@@ -70,6 +71,7 @@ public class Projet extends AppCompatActivity implements View.OnClickListener {
         if(v==btnAjouter) {
             Intent intent = new Intent(Projet.this,PageAjouterProjet.class);
             intent.putExtra("USER_ID",id);
+            intent.putExtra("TOKEN",token);
             aRL.launch(intent);
 
         }

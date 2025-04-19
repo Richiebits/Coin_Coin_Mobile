@@ -26,6 +26,8 @@ import androidx.core.view.WindowInsetsCompat;
 import org.json.JSONException;
 
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
 public class PageAjouterProjet extends AppCompatActivity implements View.OnClickListener {
 
@@ -43,7 +45,7 @@ public class PageAjouterProjet extends AppCompatActivity implements View.OnClick
 
     private Button btnCreer;
 
-    private String id;
+    private String id,token;
 
     private String[] frequence;
     private ActivityResultLauncher<Intent> activityResultLauncher;
@@ -211,6 +213,10 @@ public class PageAjouterProjet extends AppCompatActivity implements View.OnClick
                         nomRetrait = null;
                         Intent intent = getIntent();
                         this.id =intent.getStringExtra("USER_ID");
+                        String route = "client/" + id;
+                        token = intent.getStringExtra("TOKEN");
+                        Map<String, String> headers = new HashMap<>();
+                        headers.put("Authorization", "Bearer " + token);
                         String jsonBodyProjetBudget = "{\"nomProjet\":\"" + nomProjet + "\","
                                 + "\"but_epargne\":\"" + valeurMontantBudget + "\","
                                 + "\"client_id\":\"" + this.id + "\","
@@ -225,7 +231,7 @@ public class PageAjouterProjet extends AppCompatActivity implements View.OnClick
                                 + "\"retrait_recurrence\":" + getRecurrence(spinnerRetrait) + "}";
 
 
-                        FetchApi.fetchData("projet", "POST", jsonBodyProjetBudget, new OnDataFetchedListener() {
+                        FetchApi.fetchData("projet", "POST", jsonBodyProjetBudget,headers, new OnDataFetchedListener() {
                             @Override
                             public void onSuccess(String data) throws JSONException {
                                 Toast.makeText(PageAjouterProjet.this, "Projet créé avec succès", Toast.LENGTH_SHORT).show();
@@ -246,6 +252,10 @@ public class PageAjouterProjet extends AppCompatActivity implements View.OnClick
                     } else {
                         Intent intent = getIntent();
                         this.id =intent.getStringExtra("USER_ID");
+                        String route = "client/" + id;
+                        token = intent.getStringExtra("TOKEN");
+                        Map<String, String> headers = new HashMap<>();
+                        headers.put("Authorization", "Bearer " + token);
                         String montantDepot = null;
                         String montantRetrait = null;
                         String jsonBodyProjet = "{\"nomProjet\":\"" + nomProjet + "\","
@@ -255,7 +265,7 @@ public class PageAjouterProjet extends AppCompatActivity implements View.OnClick
                                 + "\"depots_total\":" + (montantDepot == null ? "null" : "\"" + montantDepot + "\"") + ","
                                 + "\"date_fin\":\"" + dateCible + "\"}";
 
-                        FetchApi.fetchData("projet", "POST", jsonBodyProjet, new OnDataFetchedListener() {
+                        FetchApi.fetchData("projet", "POST", jsonBodyProjet,headers, new OnDataFetchedListener() {
                             @Override
                             public void onSuccess(String data) throws JSONException {
                                 Toast.makeText(PageAjouterProjet.this, "Projet créé avec succès", Toast.LENGTH_SHORT).show();
