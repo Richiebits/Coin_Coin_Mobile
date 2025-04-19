@@ -4,8 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
-import android.graphics.LinearGradient;
-import android.graphics.Shader;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.util.Log;
@@ -39,7 +37,6 @@ import com.github.mikephil.charting.formatter.ValueFormatter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Locale;
 
 public class PageGraphique extends AppCompatActivity implements View.OnClickListener {
     private LinearLayout carteLayout;
@@ -50,6 +47,8 @@ public class PageGraphique extends AppCompatActivity implements View.OnClickList
     private static final int SWIPE_THRESHOLD_VELOCITY = 300;
     private static final int SWIPE_MIN_DISTANCE = 50;
     private static final int SWIPE_MAX_DISTANCE = 400;
+
+    private String id,token;
 
     private CardView btnDepot, btnRetrait, btnDate, btnConfig;
     private ActivityResultLauncher<Intent> aRL;
@@ -71,6 +70,10 @@ public class PageGraphique extends AppCompatActivity implements View.OnClickList
         btnRetour.setOnClickListener(this);
         btnDepot = (CardView) findViewById(R.id.btnDepot);
         btnDepot.setOnClickListener(this);
+        Intent intent = getIntent();
+        this.id = intent.getStringExtra("USER_ID");
+        this.token = intent.getStringExtra("TOKEN");
+        Log.d("DEBUGG",token);
         btnRetrait = (CardView) findViewById(R.id.btnRetrait);
         btnRetrait.setOnClickListener(this);
         aRL = registerForActivityResult(
@@ -93,8 +96,10 @@ public class PageGraphique extends AppCompatActivity implements View.OnClickList
     @Override
     public void onClick(View v) {
         if(v==btnRetour) {
-            Intent intent = new Intent(PageGraphique.this, Projet.class);
-            aRL.launch(intent);
+            Intent intent = new Intent(PageGraphique.this, PageProjet.class);
+            intent.putExtra("USER_iD",id);
+            intent.putExtra("TOKEN",token);
+            startActivity(intent);
         }
         if(v == btnDepot){
             Intent intent = new Intent(PageGraphique.this, PageListe.class);

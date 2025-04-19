@@ -1,16 +1,12 @@
 package com.example.coin_coin_mobile;
 
 import android.annotation.SuppressLint;
-import android.app.DownloadManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.view.ViewStub;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-import okhttp3.Request;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResult;
@@ -94,7 +90,7 @@ public class PageAccueil extends AppCompatActivity implements View.OnClickListen
     @Override
     public void onClick(View v) {
         if (v==btnAccueilProjets){
-            Intent intent = new Intent (PageAccueil.this,Projet.class);
+            Intent intent = new Intent (PageAccueil.this, PageProjet.class);
             Toast.makeText(this,id,Toast.LENGTH_LONG).show();
             intent.putExtra("USER_ID",this.id);
             intent.putExtra("TOKEN",token);

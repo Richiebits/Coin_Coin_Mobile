@@ -192,7 +192,7 @@ public class PageAjouterProjet extends AppCompatActivity implements View.OnClick
         }
 
         if (v==btnRetour){
-            Intent intent = new Intent(PageAjouterProjet.this,Projet.class);
+            Intent intent = new Intent(PageAjouterProjet.this, PageProjet.class);
             intent.putExtra("USER_ID",id);
             intent.putExtra("TOKEN",token);
             startActivity(intent);
