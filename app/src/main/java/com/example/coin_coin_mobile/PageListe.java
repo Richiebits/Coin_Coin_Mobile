@@ -30,6 +30,8 @@ public class PageListe extends AppCompatActivity implements View.OnClickListener
     private ImageButton btnRetour;
     private ActivityResultLauncher<Intent> aRL;
 
+    private String id,token;
+
     private TextView titre;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +48,8 @@ public class PageListe extends AppCompatActivity implements View.OnClickListener
         titre=(TextView) findViewById(R.id.txtTitre);
 
         Intent intent = getIntent();
+        this.id = intent.getStringExtra("USER_ID");
+        this.token = intent.getStringExtra("TOKEN");
         String type = intent.getStringExtra("TYPE");
 
         String[] dates = getResources().getStringArray(R.array.dates);
@@ -84,7 +88,9 @@ public class PageListe extends AppCompatActivity implements View.OnClickListener
     public void onClick(View v) {
     if(v == btnRetour){
         Intent intent = new Intent(PageListe.this, PageGraphique.class);
-        aRL.launch(intent);
+        intent.putExtra("USER_ID",id);
+        intent.putExtra("TOKEN",token);
+        startActivity(intent);
     }
     }
 }

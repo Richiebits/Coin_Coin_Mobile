@@ -13,10 +13,11 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.Map;
 
 public class FetchApi {
 
-    public static void fetchData( String path, String method, String jsonBody, OnDataFetchedListener listener) {
+    public static void fetchData( String path, String method, String jsonBody,Map<String, String> headers, OnDataFetchedListener listener) {
         //path: api path ex:client/id
         //method: fetch method ex: GET, POST
         new Thread(() -> {
@@ -28,6 +29,13 @@ public class FetchApi {
                 conn.setReadTimeout(5000);
                 conn.setRequestProperty("Content-Type", "application/json");
                 conn.setRequestProperty("Accept", "application/json");
+
+
+                if (headers != null) {
+                    for (Map.Entry<String, String> entry : headers.entrySet()) {
+                        conn.setRequestProperty(entry.getKey(), entry.getValue());
+                    }
+                }
 
                 if ((method.equalsIgnoreCase("POST") ||
                         method.equalsIgnoreCase("PUT")) && jsonBody != null){

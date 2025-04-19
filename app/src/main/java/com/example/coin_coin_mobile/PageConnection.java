@@ -109,15 +109,17 @@ public class PageConnection extends AppCompatActivity implements View.OnClickLis
 
 
             FetchApi.fetchData("client/connexion",
-                            "POST", jsonBody, new OnDataFetchedListener() {
+                            "POST", jsonBody,null, new OnDataFetchedListener() {
                 @Override
                 public void onSuccess(String data) throws JSONException {
                     if (!data.equalsIgnoreCase("false")){
 
                         JSONObject JsonData = new JSONObject(data);
                         String id = JsonData.getString("id");
+                        String token = JsonData.getString("token");
                         Intent intentConnexion = new Intent(PageConnection.this,PageAccueil.class);
                         intentConnexion.putExtra("USER_ID", id );
+                        intentConnexion.putExtra("TOKEN",token);
                         activityResultLauncher.launch(intentConnexion);
                     } else {
                         editTextPassword.setText("");
