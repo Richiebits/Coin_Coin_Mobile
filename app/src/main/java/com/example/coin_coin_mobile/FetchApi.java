@@ -20,9 +20,11 @@ public class FetchApi {
     public static void fetchData( String path, String method, String jsonBody,Map<String, String> headers, OnDataFetchedListener listener) {
         //path: api path ex:client/id
         //method: fetch method ex: GET, POST
+        String ipAddressP = "10.0.0.182";//telephone
+        String ipAddressE = "10.0.2.2"; // emulateur
         new Thread(() -> {
             try {
-                URL url = new URL("http://10.0.2.2:8000/api/" + path);
+                URL url = new URL("http://"+ipAddressP +":8000/api/" + path);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod(method);
                 conn.setConnectTimeout(5000);
