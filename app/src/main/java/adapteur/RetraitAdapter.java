@@ -3,6 +3,7 @@ package adapteur;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,14 +55,35 @@ public class RetraitAdapter extends ArrayAdapter<Retrait> {
 
         if (retrait != null) {
             // Récupération des éléments graphiques définis dans le fichier XML de mise en page
-            final TextView tvId = view.findViewById(R.id.tvId);
-            final TextView tvDate = view.findViewById(R.id.tvDate);
+            final TextView tvRecurrence = view.findViewById(R.id.tvRecurrence);
             final TextView tvMontant = view.findViewById(R.id.tvMontant);
+            final TextView tvNom = view.findViewById(R.id.tvNom);
+
 
             // Affectation des valeurs aux TextViews
-            tvId.setText(retrait.getId());
-            tvDate.setText(retrait.getDate());
-            tvMontant.setText(retrait.getMontant());
+            tvMontant.setText(retrait.getMontant() + "$");
+            tvNom.setText(retrait.getNom());
+
+            switch (retrait.getRetrait_recurrence()){
+                case 30:
+                    tvRecurrence.setText("Mensuel");
+                    break;
+                case 7:
+                    tvRecurrence.setText("Hebdomadaire");
+                    break;
+                case 14:
+                    tvRecurrence.setText("Bi-hebdomadaire");
+                    break;
+                case 365:
+                    tvRecurrence.setText("Annuellement");
+                    break;
+                case 0:
+                    tvRecurrence.setText("Instantané");
+                    tvRecurrence.setTextColor(Color.parseColor("#5a5a5a"));
+                    break;
+
+            }
+
 
         }
         return view; // Retourne la vue modifiée pour affichage dans la liste

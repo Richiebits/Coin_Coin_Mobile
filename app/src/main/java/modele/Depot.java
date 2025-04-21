@@ -1,36 +1,33 @@
 package modele;
 
 public class Depot {
-    private String id, date, montant;
+    private int id, montant, depot_recurrence;
+    private String nom;
 
-    public Depot(String id, String date, String montant){
+    public Depot(int id, int montant, int depot_recurrence, String nom) {
         this.id = id;
-        this.date = date;
         this.montant = montant;
+        this.depot_recurrence = depot_recurrence;
+        this.nom = nom;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public String getDate() {
-        return date;
-    }
-
-    public String getMontant() {
+    public int getMontant() {
         return montant;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public int getDepot_recurrence() {
+        return depot_recurrence;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public String getNom() {
+        return nom;
     }
-
-    public void setMontant(String montant) {
-        this.montant = montant;
+    @Override
+    public String toString() {
+        return "Depot{id=" + id + ", name='" + nom + "', ...}";
     }
-
 }

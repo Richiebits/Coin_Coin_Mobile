@@ -49,6 +49,7 @@ public class PageGraphique extends AppCompatActivity implements View.OnClickList
     private static final int SWIPE_MAX_DISTANCE = 400;
 
     private String id,token;
+    private int projetId;
 
     private CardView btnDepot, btnRetrait, btnDate, btnConfig;
     private ActivityResultLauncher<Intent> aRL;
@@ -73,6 +74,7 @@ public class PageGraphique extends AppCompatActivity implements View.OnClickList
         Intent intent = getIntent();
         this.id = intent.getStringExtra("USER_ID");
         this.token = intent.getStringExtra("TOKEN");
+        this.projetId = intent.getIntExtra("PROJET_ID", -1);
         Log.d("DEBUGG",token);
         btnRetrait = (CardView) findViewById(R.id.btnRetrait);
         btnRetrait.setOnClickListener(this);
@@ -103,6 +105,7 @@ public class PageGraphique extends AppCompatActivity implements View.OnClickList
             intent.putExtra("USER_ID",id);
             intent.putExtra("TOKEN",token);
             intent.putExtra("TYPE", "Depot");
+            intent.putExtra("PROJET_ID", projetId);
             startActivity(intent);
         }
         if(v == btnRetrait){
@@ -110,6 +113,7 @@ public class PageGraphique extends AppCompatActivity implements View.OnClickList
             intent.putExtra("USER_ID",id);
             intent.putExtra("TOKEN",token);
             intent.putExtra("TYPE", "Retrait");
+            intent.putExtra("PROJET_ID", projetId);
             startActivity(intent);
         }
     }

@@ -56,6 +56,7 @@ public class ProjetDao {
                     }
                     @Override
                     public void onError(String error) {
+
                         Log.e("ERROR", "Fetch error: " + error);
                     }
                 });

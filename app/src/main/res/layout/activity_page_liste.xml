@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".PageListe">
+    tools:context=".PageListe"
+    android:background="@color/white">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
@@ -70,16 +71,30 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <Button
+        android:id="@+id/btnAjouterTransaction"
+        android:layout_width="70sp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:backgroundTint="#3c852d"
+        android:text="@string/ajouterProjet"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/lvPersonnes"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
+
     <ListView
 
         android:id="@+id/lvPersonnes"
-        android:layout_width="match_parent"
-        android:layout_height="634dp"
+        android:layout_width="370dp"
+        android:layout_height="526dp"
+        android:layout_marginBottom="24dp"
         android:background="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
+        app:layout_constraintHorizontal_bias="0.487"
+        app:layout_constraintStart_toStartOf="parent">
 
     </ListView>
 

@@ -29,78 +29,63 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintBottom_toTopOf="@id/linTop"
+                app:layout_constraintBottom_toTopOf="@id/linBot"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent">
 
                 <TextView
-                    android:id="@+id/tvId"
+                    android:id="@+id/tvNom"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:fontFamily="@font/galindo"
                     android:paddingLeft="5dp"
                     android:paddingRight="5dp"
-                    android:text="-id-"
-                    android:textAlignment="center"
-                    android:textColor="#040303"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/tvDate"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:fontFamily="@font/galindo"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="5dp"
-                    android:text="YYYY-MM-DD"
-                    android:textAlignment="center"
-                    android:textColor="#040303"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
+                    android:text="NOM DU DEPOT"
+                    android:textAlignment="textStart"
+                    android:textColor="#000000"
+                    android:textSize="14sp" />
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/linBottom"
+                android:id="@+id/linBot"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintTop_toBottomOf="@id/linTop"
+                app:layout_constraintBottom_toTopOf="@id/linTop"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                tools:layout_editor_absoluteY="12dp">
+                app:layout_constraintStart_toStartOf="parent">
+
 
                 <TextView
-                    android:id="@+id/tvTitre"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:fontFamily="@font/galindo"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="5dp"
-                    android:text="Montant : "
-                    android:textAlignment="center"
-                    android:textColor="#040303"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/tvMontant"
+                    android:id="@+id/tvRecurrence"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
                     android:fontFamily="@font/galindo"
                     android:paddingLeft="5dp"
                     android:paddingRight="5dp"
-                    android:text="0.0"
-                    android:textAlignment="center"
-                    android:textColor="#FFC107"
-                    android:textColorHighlight="@android:color/holo_blue_bright"
-                    android:textSize="20sp"
+                    android:text="Hebdomadaire"
+                    android:textAlignment="textStart"
+                    android:textColor="#040303"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tvMontant"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:fontFamily="@font/galindo"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:text="100$"
+                    android:textAlignment="textStart"
+                    android:textColor="#786F20"
+                    android:textSize="18sp"
                     android:textStyle="bold" />
             </LinearLayout>
+
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

@@ -1,35 +1,48 @@
 package modele;
 
 public class Retrait {
-    private String id, date, montant;
+    private int id;
+    private int montant;
+    private int retrait_recurrence;
+    private String nom;
 
-    public Retrait(String id, String date, String montant){
+    public Retrait(int id, int montant, int retrait_recurrence, String nom) {
         this.id = id;
-        this.date = date;
         this.montant = montant;
+        this.retrait_recurrence = retrait_recurrence;
+        this.nom = nom;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public String getDate() {
-        return date;
-    }
-
-    public String getMontant() {
+    public int getMontant() {
         return montant;
     }
 
-    public void setId(String id) {
+    public int getRetrait_recurrence() {
+        return retrait_recurrence;
+    }
+
+    public String getNom() {
+        return nom;
+    }
+
+    // Setters
+    public void setId(int id) {
         this.id = id;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public void setMontant(int montant) {
+        this.montant = montant;
     }
 
-    public void setMontant(String montant) {
-        this.montant = montant;
+    public void setRetrait_recurrence(int retrait_recurrence) {
+        this.retrait_recurrence = retrait_recurrence;
+    }
+
+    public void setNom(String nom) {
+        this.nom = nom;
     }
 }
