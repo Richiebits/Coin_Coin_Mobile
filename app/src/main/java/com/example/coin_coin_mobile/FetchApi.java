@@ -23,7 +23,7 @@ public class FetchApi {
 
         new Thread(() -> {
             try {
-                URL url = new URL("http://" + ipAddressP + ":8000/api/" + path);
+                URL url = new URL("http://" + ipAddressE + ":8000/api/" + path);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod(method);
                 conn.setConnectTimeout(5000);

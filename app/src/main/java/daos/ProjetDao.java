@@ -60,15 +60,6 @@ public class ProjetDao {
                         Log.e("ERROR", "Fetch error: " + error);
                     }
                 });
-
-
-
-
-
-
-
-
-
     }
 
 

@@ -96,6 +96,7 @@
             android:background="@color/white"
             android:orientation="horizontal"
             android:paddingTop="16dp"
+            android:scrollbars="none"
             android:paddingBottom="16dp">
 
             <androidx.cardview.widget.CardView
@@ -199,7 +200,7 @@
 
             <androidx.cardview.widget.CardView
                 android:stateListAnimator="@animator/scale_on_click"
-                android:id="@+id/btnConfig"
+                android:id="@+id/btnSupprimer"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -221,43 +222,27 @@
                         android:layout_width="64dp"
                         android:layout_height="64dp"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/project"
+                        android:src="@drawable/delete_safe"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
-                        android:id="@+id/txtInitial"
+                        android:id="@+id/txtSupprimer"
                         android:layout_width="163dp"
                         android:layout_height="33dp"
                         android:layout_marginStart="8dp"
                         android:fontFamily="@font/galindo"
-                        android:text="Initiales"
-                        android:textAlignment="center"
+                        android:text="@string/suppProjet"
                         android:textColor="#040303"
                         android:textSize="26sp"
                         android:textStyle="bold"
+                        android:textAlignment="center"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toEndOf="@+id/imageView4"
                         app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/txtDuTexte"
-                        android:layout_width="163dp"
-                        android:layout_height="33dp"
-                        android:layout_marginStart="8dp"
-                        android:fontFamily="@font/junge"
-                        android:gravity="center"
-                        android:text="Blabla"
-                        android:textAlignment="center"
-                        android:textColor="#040303"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.0"
-                        app:layout_constraintStart_toEndOf="@+id/imageView4" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
 
