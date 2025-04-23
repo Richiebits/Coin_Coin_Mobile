@@ -28,6 +28,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,7 +47,7 @@ public class PageListe extends AppCompatActivity implements View.OnClickListener
     private ListView lv;
     private ImageButton btnRetour;
     private ActivityResultLauncher<Intent> aRL;
-    private String id, token, type;
+    private String id, token, type, projetNom;
     private int projetId, budgetId;
     private TextView titre;
     private Button btnAjouterTransaction;
@@ -72,6 +73,7 @@ public class PageListe extends AppCompatActivity implements View.OnClickListener
         this.token = intent.getStringExtra("TOKEN");
         this.projetId = intent.getIntExtra("PROJET_ID", -1);
         this.type = intent.getStringExtra("TYPE");
+        this.projetNom = intent.getStringExtra("PROJET_NOM");
 
         loadData();
 
@@ -84,6 +86,7 @@ public class PageListe extends AppCompatActivity implements View.OnClickListener
             intent.putExtra("USER_ID", id);
             intent.putExtra("TOKEN", token);
             intent.putExtra("PROJET_ID", projetId);
+            intent.putExtra("PROJET_NOM", projetNom);
             startActivity(intent);
         }
         if (v == btnAjouterTransaction) {
@@ -110,6 +113,7 @@ public class PageListe extends AppCompatActivity implements View.OnClickListener
                         JSONArray BudgetArray = new JSONArray(data);
                         JSONObject jsonData = BudgetArray.getJSONObject(0);
                         budgetId = jsonData.getInt("id");
+                        Log.d("API_RESPONSE", String.valueOf(budgetId)+  "  prjet: " + projetId + id);
                     } else {
                         Log.e("ERROR", "Empty or invalid data received: " + data);
                     }
@@ -158,25 +162,34 @@ public class PageListe extends AppCompatActivity implements View.OnClickListener
                             }
                             Map<String, String> headers = new HashMap<>();
                             headers.put("Authorization", "Bearer " + token);
+                            String type = "depot";
+
+                            String currentDate = LocalDate.now().toString();
+                            int montantv1 = !montantStr.isEmpty() ? (int) Double.parseDouble(montantStr) : 0;
                             String jsonBodyTransaction = "{"
                                     + "\"nomDepot\":\"" + nom + "\","
-                                    + "\"montantDepot\":" + Double.parseDouble(montantStr) + ","
+                                    + "\"montantDepot\":" + montantv1 + ","
                                     + "\"depot_recurrence\":" + recurrence + ","
-                                    + "\"id\":" + budgetId
+                                    + "\"id\":" + budgetId + ","
+                                    + "\"projet_id\":" + projetId + ","
+                                    + "\"client_id\":\"" + String.valueOf(id) + "\","
+                                    + "\"date_histo\":\"" + currentDate + "\","
+                                    + "\"type\":\"" + type + "\","
+                                    + "\"montant\":" +montantv1
                                     + "}";
 
+                            Log.d("ERROR", jsonBodyTransaction);
                             FetchApi.fetchData("revenu", "POST", jsonBodyTransaction, headers, new OnDataFetchedListener() {
                                 @Override
                                 public void onSuccess(String data) throws JSONException {
                                     Toast.makeText(PageListe.this, "Dépot Ajouté!", Toast.LENGTH_SHORT).show();
-                                    loadData();
                                 }
-
                                 @Override
                                 public void onError(String error) {
                                     Log.e("ERROR", "POST error: " + error);
                                 }
                             });
+                            loadData();
                             dialog.dismiss();
                         });
                     });
@@ -215,20 +228,28 @@ public class PageListe extends AppCompatActivity implements View.OnClickListener
                                 editTextMontant.setError("Entrez un montant valide (ex : 25.50)");
                                 return;
                             }
+                            String currentDate = LocalDate.now().toString();
+                            String type = "retrait";
+                            int montantv1 = !montantStr.isEmpty() ? (int) Double.parseDouble(montantStr) : 0;
                             Map<String, String> headers = new HashMap<>();
                             headers.put("Authorization", "Bearer " + token);
                             String jsonBodyTransaction = "{"
                                     + "\"nomRetrait\":\"" + nom + "\","
-                                    + "\"montantRetrait\":" + Double.parseDouble(montantStr) + ","
+                                    + "\"montantRetrait\":" + montantv1 + ","
                                     + "\"retrait_recurrence\":" + recurrence + ","
-                                    + "\"id\":" + budgetId
+                                    + "\"id\":" + budgetId + ","
+                                    + "\"projet_id\":" + projetId + ","
+                                    + "\"client_id\":\"" + String.valueOf(id) + "\","
+                                    + "\"date_histo\":\"" + currentDate + "\","
+                                    + "\"type\":\"" + type + "\","
+                                    + "\"montant\":" + montantv1
                                     + "}";
 
                             FetchApi.fetchData("depense", "POST", jsonBodyTransaction, headers, new OnDataFetchedListener() {
                                 @Override
                                 public void onSuccess(String data) throws JSONException {
                                     Toast.makeText(PageListe.this, "Retrait Ajouté!", Toast.LENGTH_SHORT).show();
-                                    loadData();
+
                                 }
 
                                 @Override
@@ -236,6 +257,7 @@ public class PageListe extends AppCompatActivity implements View.OnClickListener
                                     Log.e("ERROR", "POST error: " + error);
                                 }
                             });
+                            loadData();
                             dialog2.dismiss();
                         });
                     });

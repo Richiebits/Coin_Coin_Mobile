@@ -102,6 +102,7 @@ public class PageCreationCompte extends AppCompatActivity implements View.OnClic
                         }
                     });
                 } else {
+                    editMDP.setError("Le mot de passe doit etre 8 charactères et doit contenir 1 nbr, 1 spc char, 1 caps");
                     Toast.makeText(PageCreationCompte.this,
                             "Le mot de passe doit etre 8 charactères et doit contenir 1 nbr, 1 spc char, 1 caps", Toast.LENGTH_SHORT).show();
                 }

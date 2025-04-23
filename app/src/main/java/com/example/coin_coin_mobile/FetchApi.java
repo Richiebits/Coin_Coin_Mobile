@@ -17,14 +17,13 @@ import java.util.Map;
 
 public class FetchApi {
 
-    public static void fetchData( String path, String method, String jsonBody,Map<String, String> headers, OnDataFetchedListener listener) {
-        //path: api path ex:client/id
-        //method: fetch method ex: GET, POST
-        String ipAddressP = "10.0.0.182";//telephone
-        String ipAddressE = "10.0.2.2"; // emulateur
+    public static void fetchData(String path, String method, String jsonBody, Map<String, String> headers, OnDataFetchedListener listener) {
+        String ipAddressP = "10.0.0.182"; // téléphone - louis
+        String ipAddressE = "10.0.2.2"; // émulateur
+
         new Thread(() -> {
             try {
-                URL url = new URL("http://"+ipAddressP +":8000/api/" + path);
+                URL url = new URL("http://" + ipAddressP + ":8000/api/" + path);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod(method);
                 conn.setConnectTimeout(5000);
@@ -32,17 +31,21 @@ public class FetchApi {
                 conn.setRequestProperty("Content-Type", "application/json");
                 conn.setRequestProperty("Accept", "application/json");
 
-
                 if (headers != null) {
                     for (Map.Entry<String, String> entry : headers.entrySet()) {
-                        conn.setRequestProperty(entry.getKey(), entry.getValue());
+                        if (entry.getValue() == null) {
+                            Log.e("FETCH_API", "Header " + entry.getKey() + " has null value!");
+                        } else {
+                            conn.setRequestProperty(entry.getKey(), entry.getValue());
+                        }
                     }
+                } else {
+                    Log.w("FETCH_API", "Headers map is null");
                 }
 
-                if ((method.equalsIgnoreCase("POST") ||
-                        method.equalsIgnoreCase("PUT")) && jsonBody != null){
+                if ((method.equalsIgnoreCase("POST") || method.equalsIgnoreCase("PUT")) && jsonBody != null) {
                     conn.setDoOutput(true);
-                    try (OutputStream os = conn.getOutputStream()){
+                    try (OutputStream os = conn.getOutputStream()) {
                         byte[] input = jsonBody.getBytes(StandardCharsets.UTF_8);
                         os.write(input, 0, input.length);
                     }
@@ -50,45 +53,69 @@ public class FetchApi {
 
                 int responseCode = conn.getResponseCode();
                 if (responseCode == HttpURLConnection.HTTP_OK) {
-                    BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-                    StringBuilder response = new StringBuilder();
-                    String line;
-                    while ((line = in.readLine()) != null) {
-                        response.append(line);
-                    }
-                    in.close();
-                    conn.disconnect();
-
-                    String data = response.toString();
-                    Log.d("API_RESPONSE", data);
-
-
-                    new Handler(Looper.getMainLooper()).post(() -> {
-                        try {
-                            listener.onSuccess(data);
-                        } catch (JSONException e) {
-                            throw new RuntimeException(e);
+                    InputStream inputStream = conn.getInputStream();
+                    if (inputStream != null) {
+                        BufferedReader in = new BufferedReader(new InputStreamReader(inputStream));
+                        StringBuilder response = new StringBuilder();
+                        String line;
+                        while ((line = in.readLine()) != null) {
+                            response.append(line);
                         }
-                    });
+                        in.close();
+                        conn.disconnect();
+
+                        String data = response.toString();
+                        Log.d("API_RESPONSE", data);
+
+                        new Handler(Looper.getMainLooper()).post(() -> {
+                            try {
+                                if (listener != null) {
+                                    listener.onSuccess(data);
+                                } else {
+                                    Log.e("FETCH_API", "Listener is null in onSuccess!");
+                                }
+                            } catch (JSONException e) {
+                                Log.e("FETCH_API", "JSONException in onSuccess", e);
+                            }
+                        });
+                    }
 
                 } else {
                     InputStream errorStream = conn.getErrorStream();
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(errorStream));
-                    String line;
-                    StringBuilder responseBuilder = new StringBuilder();
-                    while ((line = reader.readLine()) != null) {
-                        responseBuilder.append(line);
+                    if(errorStream != null) {
+
+
+                        BufferedReader reader = new BufferedReader(new InputStreamReader(errorStream));
+                        StringBuilder responseBuilder = new StringBuilder();
+                        String line;
+                        while ((line = reader.readLine()) != null) {
+                            responseBuilder.append(line);
+                        }
+                        Log.e("POST_ERROR", "Server Error Response: " + responseBuilder.toString());
+                        Log.e("API_ERROR", "Response Code: " + responseCode);
+
+                        new Handler(Looper.getMainLooper()).post(() -> {
+                            if (listener != null) {
+                                listener.onError("Error: " + responseCode);
+                            } else {
+                                Log.e("FETCH_API", "Listener is null in onError (response code case)");
+                            }
+                        });
                     }
-                    Log.e("POST_ERROR", "Server Error Response: " + responseBuilder.toString());
-                    Log.e("API_ERROR", "Response Code: " + responseCode);
-                    new Handler(Looper.getMainLooper()).post(() -> listener.onError("Error: " + responseCode));
                 }
 
             } catch (Exception e) {
-                e.printStackTrace();
-                new Handler(Looper.getMainLooper()).post(() -> listener.onError(e.getMessage()));
+                Log.e("EXCEPTION", "Exception caught", e);
+                new Handler(Looper.getMainLooper()).post(() -> {
+                    if (listener != null) {
+                        listener.onError(e.toString());
+                    } else {
+                        Log.e("FETCH_API", "Listener is null in onError (exception case)");
+                    }
+                });
             }
         }).start();
     }
 }
+
 

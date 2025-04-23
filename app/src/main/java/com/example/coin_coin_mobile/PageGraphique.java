@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResult;
@@ -48,11 +49,12 @@ public class PageGraphique extends AppCompatActivity implements View.OnClickList
     private static final int SWIPE_MIN_DISTANCE = 50;
     private static final int SWIPE_MAX_DISTANCE = 400;
 
-    private String id,token;
+    private String id,token,projetNom;
     private int projetId;
 
     private CardView btnDepot, btnRetrait, btnDate, btnConfig;
     private ActivityResultLauncher<Intent> aRL;
+    private TextView txtTitre;
 
     private float montantObjectif = 1000f;
 
@@ -71,10 +73,13 @@ public class PageGraphique extends AppCompatActivity implements View.OnClickList
         btnRetour.setOnClickListener(this);
         btnDepot = (CardView) findViewById(R.id.btnDepot);
         btnDepot.setOnClickListener(this);
+        txtTitre = (TextView) findViewById(R.id.txtTitre);
         Intent intent = getIntent();
         this.id = intent.getStringExtra("USER_ID");
         this.token = intent.getStringExtra("TOKEN");
         this.projetId = intent.getIntExtra("PROJET_ID", -1);
+        this.projetNom = intent.getStringExtra("PROJET_NOM");
+        txtTitre.setText(projetNom);
         Log.d("DEBUGG",token);
         btnRetrait = (CardView) findViewById(R.id.btnRetrait);
         btnRetrait.setOnClickListener(this);
@@ -106,6 +111,7 @@ public class PageGraphique extends AppCompatActivity implements View.OnClickList
             intent.putExtra("TOKEN",token);
             intent.putExtra("TYPE", "Depot");
             intent.putExtra("PROJET_ID", projetId);
+            intent.putExtra("PROJET_NOM", projetNom);
             startActivity(intent);
         }
         if(v == btnRetrait){
@@ -114,6 +120,7 @@ public class PageGraphique extends AppCompatActivity implements View.OnClickList
             intent.putExtra("TOKEN",token);
             intent.putExtra("TYPE", "Retrait");
             intent.putExtra("PROJET_ID", projetId);
+            intent.putExtra("PROJET_NOM", projetNom);
             startActivity(intent);
         }
     }
