@@ -2,6 +2,7 @@ package com.example.coin_coin_mobile;
 
 import android.content.Intent;
 import android.media.Image;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
@@ -164,7 +165,10 @@ public class PageListe extends AppCompatActivity implements View.OnClickListener
                             headers.put("Authorization", "Bearer " + token);
                             String type = "depot";
 
-                            String currentDate = LocalDate.now().toString();
+                            String currentDate = null;
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                currentDate = LocalDate.now().toString();
+                            }
                             int montantv1 = !montantStr.isEmpty() ? (int) Double.parseDouble(montantStr) : 0;
                             String jsonBodyTransaction = "{"
                                     + "\"nomDepot\":\"" + nom + "\","
@@ -228,7 +232,10 @@ public class PageListe extends AppCompatActivity implements View.OnClickListener
                                 editTextMontant.setError("Entrez un montant valide (ex : 25.50)");
                                 return;
                             }
-                            String currentDate = LocalDate.now().toString();
+                            String currentDate = null;
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                currentDate = LocalDate.now().toString();
+                            }
                             String type = "retrait";
                             int montantv1 = !montantStr.isEmpty() ? (int) Double.parseDouble(montantStr) : 0;
                             Map<String, String> headers = new HashMap<>();

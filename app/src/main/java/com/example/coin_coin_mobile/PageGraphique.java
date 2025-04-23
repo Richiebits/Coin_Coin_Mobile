@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -28,6 +30,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
@@ -35,9 +38,27 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.TreeMap;
+
+import adapteur.DepotAdapter;
+import modele.Depot;
+import modele.Transaction;
 
 public class PageGraphique extends AppCompatActivity implements View.OnClickListener {
     private LinearLayout carteLayout;
@@ -49,14 +70,18 @@ public class PageGraphique extends AppCompatActivity implements View.OnClickList
     private static final int SWIPE_MIN_DISTANCE = 50;
     private static final int SWIPE_MAX_DISTANCE = 400;
 
-    private String id,token,projetNom;
+    private String id, token, projetNom;
     private int projetId;
 
     private CardView btnDepot, btnRetrait, btnDate, btnConfig;
     private ActivityResultLauncher<Intent> aRL;
     private TextView txtTitre;
 
-    private float montantObjectif = 1000f;
+    private float montantObjectif = 2000f;
+    ArrayList<Transaction> transactionList = new ArrayList<>();
+    private String dateFin = "";
+    private String dateDebut;
+
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -80,7 +105,7 @@ public class PageGraphique extends AppCompatActivity implements View.OnClickList
         this.projetId = intent.getIntExtra("PROJET_ID", -1);
         this.projetNom = intent.getStringExtra("PROJET_NOM");
         txtTitre.setText(projetNom);
-        Log.d("DEBUGG",token);
+        Log.d("DEBUGG", token);
         btnRetrait = (CardView) findViewById(R.id.btnRetrait);
         btnRetrait.setOnClickListener(this);
         aRL = registerForActivityResult(
@@ -93,39 +118,75 @@ public class PageGraphique extends AppCompatActivity implements View.OnClickList
                 }
         );
         chargerScrollHorizontal();
-        chargerGraphique();
+
+        //fecthing data
+        fetchTransactionAsync(new OnDataFetchedListener() {
+            @Override
+            public void onSuccess(String data) {
+                for(Transaction transaction : transactionList){
+                    Log.d("GRAPHDEBUG", "trans :" +String.valueOf(transaction));
+                }
+                fetchDateDebutFin(new OnDataFetchedListener() {
+                    @Override
+                    public void onSuccess(String data) {
+                        Log.d("ERREUR", "dates :" +dateDebut + "      " + dateFin);
+                        if(dateFin.isEmpty() || dateFin.equals("null")){
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                if(!LocalDate.now().toString().equals(dateDebut)){
+                                    dateFin = LocalDate.now().toString();
+                                }else{
+                                    dateFin = LocalDate.now().plusDays(1).toString();
+                                }
+                            }
+                        }
+                        chargerGraphique();
+                        Log.d("ERREUR", "dates :" +dateDebut + "      " + dateFin);
+                    }
+                    @Override
+                    public void onError(String error) {
+                        Log.d("ERREUR", "erreur fetch transaction pour le graphique :" + error);
+                    }
+                });
+            }
+
+            @Override
+            public void onError(String error) {
+                Log.d("ERREUR", "erreur fetch transaction pour le graphique :" + error);
+            }
+        });
 
     }
 
     @Override
     public void onClick(View v) {
-        if(v==btnRetour) {
+        if (v == btnRetour) {
             Intent intent = new Intent(PageGraphique.this, PageProjet.class);
-            intent.putExtra("USER_ID",id);
-            intent.putExtra("TOKEN",token);
+            intent.putExtra("USER_ID", id);
+            intent.putExtra("TOKEN", token);
             startActivity(intent);
         }
-        if(v == btnDepot){
+        if (v == btnDepot) {
             Intent intent = new Intent(PageGraphique.this, PageListe.class);
-            intent.putExtra("USER_ID",id);
-            intent.putExtra("TOKEN",token);
+            intent.putExtra("USER_ID", id);
+            intent.putExtra("TOKEN", token);
             intent.putExtra("TYPE", "Depot");
             intent.putExtra("PROJET_ID", projetId);
             intent.putExtra("PROJET_NOM", projetNom);
             startActivity(intent);
         }
-        if(v == btnRetrait){
+        if (v == btnRetrait) {
             Intent intent = new Intent(PageGraphique.this, PageListe.class);
-            intent.putExtra("USER_ID",id);
-            intent.putExtra("TOKEN",token);
+            intent.putExtra("USER_ID", id);
+            intent.putExtra("TOKEN", token);
             intent.putExtra("TYPE", "Retrait");
             intent.putExtra("PROJET_ID", projetId);
             intent.putExtra("PROJET_NOM", projetNom);
             startActivity(intent);
         }
     }
+
     @SuppressLint("ClickableViewAccessibility")
-    public void chargerScrollHorizontal(){
+    public void chargerScrollHorizontal() {
         carteLayout = findViewById(R.id.carteLayout);
         horizontalScrollView = findViewById(R.id.horizontalScrollView);
         int screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
@@ -219,76 +280,275 @@ public class PageGraphique extends AppCompatActivity implements View.OnClickList
             Log.e("MainActivity", "Error: layoutCarte or horizontalScrollView is null.");
         }
     }
-    public void chargerGraphique(){
-        //Le graphique
+    public void chargerGraphique() {
         LineChart lineChart = (LineChart) findViewById(R.id.lineChart);
 
-        //Tableau avec les donnes a mettre dans le tableau
         ArrayList<Entry> entries = new ArrayList<>();
-        // Donnee random
-        for (int i = 0; i < 50; i++) {
-            float yValue = (float) (Math.random() * 1000);
-            entries.add(new Entry(i, yValue));
+        ArrayList<String> xDates = new ArrayList<>();
+        SimpleDateFormat sdfFull = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        Date startDate, endDate;
+
+        // Get today's date
+        Calendar todayCalendar = Calendar.getInstance();
+        todayCalendar.set(Calendar.HOUR_OF_DAY, 0); // Set time to midnight to ignore the time part
+        todayCalendar.set(Calendar.MINUTE, 0);
+        todayCalendar.set(Calendar.SECOND, 0);
+        todayCalendar.set(Calendar.MILLISECOND, 0);
+        Date today = todayCalendar.getTime();
+
+        try {
+            startDate = sdfFull.parse(dateDebut);
+            endDate = sdfFull.parse(dateFin);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return;
         }
-        //La ligne dans le graphique
-        LineDataSet lineDataSet = new LineDataSet(entries, "Maths");
+
+        xDates.add(new SimpleDateFormat("dd MMM", Locale.getDefault()).format(startDate));
+
+        int index = 0;
+        float cumulativeBalance = 0;
+
+        // Use TreeMap to ensure chronological order
+        Map<String, Float> groupedTransactions = new TreeMap<>();
+
+        for (Transaction t : transactionList) {
+            try {
+                Date tDate = sdfFull.parse(t.getDate());
+                if (!tDate.before(startDate) && !tDate.after(endDate)) {
+                    String dateStr = sdfFull.format(tDate);
+                    groupedTransactions.put(dateStr, groupedTransactions.getOrDefault(dateStr, 0f) + t.getMontant());
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+
+        // Add entries for each day in the date range, but stop drawing the line after today
+        for (int i = 0; i < daysBetween(startDate, endDate); i++) {
+            Date currentDate = addDays(startDate, i);  // Add days to start date
+            String currentDateStr = sdfFull.format(currentDate);
+
+            // Add date to X axis
+            xDates.add(new SimpleDateFormat("dd MMM", Locale.getDefault()).format(currentDate));
+
+            // Skip adding data if the date is after today
+            if (currentDate.after(today)) {
+                continue; // Skip this date and move to the next
+            }
+
+            // If there is a transaction for the current date, update the cumulative balance
+            if (groupedTransactions.containsKey(currentDateStr)) {
+                cumulativeBalance += groupedTransactions.get(currentDateStr);
+            }
+
+            // Add entry for the cumulative balance
+            entries.add(new Entry(i, cumulativeBalance));
+
+            // Log the data for debugging
+            Log.d("GraphData", "x: " + i + ", y: " + cumulativeBalance);
+        }
+
+        // Ensure the last date is included (even if no transactions occurred on that date)
+        if (!endDate.after(today)) {
+            cumulativeBalance += groupedTransactions.getOrDefault(sdfFull.format(endDate), 0f);
+            entries.add(new Entry(entries.size(), cumulativeBalance)); // Add entry for last day
+            xDates.add(new SimpleDateFormat("dd MMM", Locale.getDefault()).format(endDate));
+        } else {
+            // Add an empty entry for the future date to maintain x-axis consistency
+            entries.add(new Entry(entries.size(), cumulativeBalance)); // Add empty entry for future date
+            xDates.add(new SimpleDateFormat("dd MMM", Locale.getDefault()).format(endDate));
+        }
+
+        // Create LineDataSet and customize it
+        LineDataSet lineDataSet = new LineDataSet(entries, "Solde");
         lineDataSet.setColor(Color.rgb(244, 206, 20));
         lineDataSet.setValueTextColor(Color.BLACK);
         lineDataSet.setLineWidth(2f);
-        lineDataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
-        lineDataSet.setCubicIntensity(0.2f);
-        lineDataSet.setCircleColor(Color.BLACK);
-        lineDataSet.setCircleHoleColor(Color.rgb(244, 206, 20));
-        //Sous la ligne
-        lineDataSet.setCubicIntensity(0.2f);
+        lineDataSet.setDrawCircles(false);
         lineDataSet.setDrawFilled(true);
         GradientDrawable drawable = new GradientDrawable(
                 GradientDrawable.Orientation.TOP_BOTTOM,
-                new int[]{Color.argb(75, 244, 206, 20), Color.argb(0, 244, 206, 20)}
+                new int[]{Color.argb(120, 244, 206, 20), Color.argb(10, 244, 206, 20)}
         );
         lineDataSet.setFillDrawable(drawable);
+        lineDataSet.setDrawValues(true);
+
+        // Set a custom ValueFormatter to hide values on consecutive equal points
+        lineDataSet.setValueFormatter(new ValueFormatter() {
+            private float lastValue = Float.MIN_VALUE;
+
+            @Override
+            public String getFormattedValue(float value) {
+                if (value == lastValue) {
+                    return "";  // Return empty string to avoid displaying the value if it is the same as the last value
+                }
+                lastValue = value;  // Update the lastValue to current value
+                return "$" + (int) value;  // Format the value as currency
+            }
+        });
+
         LineData lineData = new LineData(lineDataSet);
 
-        //X
+        // Customize XAxis
         XAxis xAxis = lineChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setGranularity(1f);
         xAxis.setLabelRotationAngle(45);
-        xAxis.setTextSize(12f);
-        xAxis.setAxisMinimum(1);
-        xAxis.setAxisMaximum(50); //Date objectif fin ======
-        xAxis.setDrawGridLines(false);
-        // Info sur l'axe x
-        SimpleDateFormat sdf = new SimpleDateFormat("dd MMM");
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(2025, Calendar.MARCH, 1); //Date du debut
+        xAxis.setTextSize(10f);
+        xAxis.setDrawGridLines(false);  // Disable grid lines on X axis
+        xAxis.setAxisMinimum(0);
+        xAxis.setAxisMaximum(xDates.size() - 1);
+
+        // Show only every nth label (e.g., every 2nd date)
+        xAxis.setLabelCount(xDates.size() / 5, false);
+
+        // Custom ValueFormatter to display fewer dates
         xAxis.setValueFormatter(new ValueFormatter() {
             @Override
             public String getAxisLabel(float value, AxisBase axis) {
-                Calendar tempCalendar = (Calendar) calendar.clone();
-                tempCalendar.add(Calendar.DAY_OF_YEAR, (int) value);
-                return sdf.format(tempCalendar.getTime());
+                int i = (int) value;
+                if (i % 2 == 0) {  // Display label only for every 2nd date
+                    return (i >= 0 && i < xDates.size()) ? xDates.get(i) : "";
+                } else {
+                    return "";  // Do not display a label for this date
+                }
             }
         });
 
-        // Y
+        // Customize YAxis
         YAxis leftAxis = lineChart.getAxisLeft();
         leftAxis.setTextSize(14f);
         leftAxis.setAxisMinimum(0f);
-        leftAxis.setAxisMaximum(montantObjectif); // Objectif ==========
-        leftAxis.setDrawGridLines(true);
+        leftAxis.setAxisMaximum(montantObjectif);
+        leftAxis.setDrawGridLines(false);  // Disable grid lines on Y axis
         leftAxis.setGranularity(100f);
-        //Ajouter $
         leftAxis.setValueFormatter(new ValueFormatter() {
             @Override
             public String getFormattedValue(float value) {
                 return "$" + (int) value;
             }
         });
+
+        // Disable right axis
         lineChart.getAxisRight().setEnabled(false);
         lineChart.getDescription().setEnabled(false);
         lineChart.setData(lineData);
-        lineChart.invalidate();
+
+        // Add a vertical line at today's date
+        int todayIndex = xDates.indexOf(new SimpleDateFormat("dd MMM", Locale.getDefault()).format(today));
+        if (todayIndex != -1) {
+            LimitLine todayLine = new LimitLine(todayIndex, "Aujourd'hui");
+            todayLine.setLineColor(Color.argb(100, 255, 0, 0));  // Red color with transparency
+            todayLine.setLineWidth(2f);
+            todayLine.enableDashedLine(10f, 5f, 0f);  // Optional: dashed line style
+            todayLine.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_TOP);
+            todayLine.setTextColor(Color.argb(100, 255, 0, 0));  // Matching text color to the line
+            xAxis.addLimitLine(todayLine);
+        }
+        // Ajouter une ligne horizontale au niveau du solde actuel à partir d'aujourd'hui jusqu'à la fin
+        // Ligne horizontale à partir d'aujourd'hui jusqu'à la fin
+        if (todayIndex != -1 && todayIndex < xDates.size() - 1) {
+            ArrayList<Entry> renduLine = new ArrayList<>();
+            renduLine.add(new Entry(todayIndex, cumulativeBalance));
+            renduLine.add(new Entry(xDates.size() - 1, cumulativeBalance));
+
+            LineDataSet renduDataSet = new LineDataSet(renduLine, "Rendu");
+            renduDataSet.setColor(Color.GRAY);
+            renduDataSet.setLineWidth(1.5f);
+            renduDataSet.enableDashedLine(10f, 5f, 0f);
+            renduDataSet.setDrawCircles(false);
+            renduDataSet.setDrawValues(false);  // Pas de texte sur la ligne
+
+            lineData.addDataSet(renduDataSet);
+        }
+
+        lineChart.invalidate();  // Refresh the chart
+    }
+
+
+
+
+
+    private int daysBetween(Date startDate, Date endDate) {
+        long diff = endDate.getTime() - startDate.getTime();
+        return (int) (diff / (1000 * 60 * 60 * 24)); // Convert milliseconds to days
+    }
+
+    private Date addDays(Date date, int days) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.add(Calendar.DATE, days);  // Add days to the date
+        return cal.getTime();
+    }
+    private void fetchTransactionAsync(OnDataFetchedListener listener) {
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Authorization", "Bearer " + token);
+        FetchApi.fetchData("historique/projet/" + projetId, "GET", null, headers, new OnDataFetchedListener() {
+
+            @Override
+            public void onSuccess(String data) throws JSONException {
+                if (!data.equalsIgnoreCase("false")) {
+                    JSONArray depotsArray = new JSONArray(data);
+                    for (int i = 0; i < depotsArray.length(); i++) {
+                        JSONObject jsonData = depotsArray.getJSONObject(i);
+                        int id = jsonData.getInt("id");
+                        String type = jsonData.getString("type");
+                        int montant = jsonData.getInt("montant");
+                        String date = jsonData.getString("date_histo");
+                        if (type.equalsIgnoreCase("retrait") && montant > 0) {
+                            montant = -montant;
+                        }
+
+                        Transaction transaction = new Transaction(id, montant, date, type);
+                        transactionList.add(transaction);
+                        Collections.sort(transactionList, Comparator.comparing(Transaction::getDate));
+                    }
+                } else {
+                    Log.e("ERROR", "Empty or invalid data received: " + data);
+                    listener.onError("Aucune donnée reçue");
+                }
+                listener.onSuccess(data);
+
+            }
+
+            @Override
+            public void onError(String error) {
+                Log.e("ERROR", "Fetch depots error: " + error);
+            }
+        });
+
+
+    }
+
+    private void fetchDateDebutFin(OnDataFetchedListener listener){
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Authorization", "Bearer " + token);
+        FetchApi.fetchData("budget/projet/" + projetId, "GET", null, headers, new OnDataFetchedListener() {
+
+            @Override
+            public void onSuccess(String data) throws JSONException {
+                if (!data.equalsIgnoreCase("false")) {
+                    JSONArray depotsArray = new JSONArray(data);
+                    for (int i = 0; i < depotsArray.length(); i++) {
+                        JSONObject jsonData = depotsArray.getJSONObject(i);
+                         dateDebut = jsonData.getString("date_debut");
+                         dateFin = jsonData.getString("date_fin");
+                    }
+                } else {
+                    Log.e("ERROR", "Empty or invalid data received: " + data);
+                    listener.onError("Aucune donnée reçue");
+                }
+                listener.onSuccess(data);
+
+            }
+
+            @Override
+            public void onError(String error) {
+                Log.e("ERROR", "Fetch depots error: " + error);
+            }
+        });
+
     }
 
 }
