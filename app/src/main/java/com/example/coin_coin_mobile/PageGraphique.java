@@ -156,7 +156,6 @@ public class PageGraphique extends AppCompatActivity implements View.OnClickList
         });
 
     }
-
     @Override
     public void onClick(View v) {
         if (v == btnRetour) {
@@ -184,7 +183,6 @@ public class PageGraphique extends AppCompatActivity implements View.OnClickList
             startActivity(intent);
         }
     }
-
     @SuppressLint("ClickableViewAccessibility")
     public void chargerScrollHorizontal() {
         carteLayout = findViewById(R.id.carteLayout);
@@ -288,9 +286,8 @@ public class PageGraphique extends AppCompatActivity implements View.OnClickList
         SimpleDateFormat sdfFull = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         Date startDate, endDate;
 
-        // Get today's date
         Calendar todayCalendar = Calendar.getInstance();
-        todayCalendar.set(Calendar.HOUR_OF_DAY, 0); // Set time to midnight to ignore the time part
+        todayCalendar.set(Calendar.HOUR_OF_DAY, 0);
         todayCalendar.set(Calendar.MINUTE, 0);
         todayCalendar.set(Calendar.SECOND, 0);
         todayCalendar.set(Calendar.MILLISECOND, 0);
@@ -309,7 +306,6 @@ public class PageGraphique extends AppCompatActivity implements View.OnClickList
         int index = 0;
         float cumulativeBalance = 0;
 
-        // Use TreeMap to ensure chronological order
         Map<String, Float> groupedTransactions = new TreeMap<>();
 
         for (Transaction t : transactionList) {
@@ -324,43 +320,29 @@ public class PageGraphique extends AppCompatActivity implements View.OnClickList
             }
         }
 
-        // Add entries for each day in the date range, but stop drawing the line after today
         for (int i = 0; i < daysBetween(startDate, endDate); i++) {
-            Date currentDate = addDays(startDate, i);  // Add days to start date
+            Date currentDate = addDays(startDate, i);
             String currentDateStr = sdfFull.format(currentDate);
-
-            // Add date to X axis
             xDates.add(new SimpleDateFormat("dd MMM", Locale.getDefault()).format(currentDate));
-
-            // Skip adding data if the date is after today
             if (currentDate.after(today)) {
-                continue; // Skip this date and move to the next
+                continue;
             }
 
-            // If there is a transaction for the current date, update the cumulative balance
             if (groupedTransactions.containsKey(currentDateStr)) {
                 cumulativeBalance += groupedTransactions.get(currentDateStr);
             }
-
-            // Add entry for the cumulative balance
             entries.add(new Entry(i, cumulativeBalance));
-
-            // Log the data for debugging
             Log.d("GraphData", "x: " + i + ", y: " + cumulativeBalance);
         }
 
-        // Ensure the last date is included (even if no transactions occurred on that date)
         if (!endDate.after(today)) {
             cumulativeBalance += groupedTransactions.getOrDefault(sdfFull.format(endDate), 0f);
-            entries.add(new Entry(entries.size(), cumulativeBalance)); // Add entry for last day
+            entries.add(new Entry(entries.size(), cumulativeBalance));
             xDates.add(new SimpleDateFormat("dd MMM", Locale.getDefault()).format(endDate));
         } else {
-            // Add an empty entry for the future date to maintain x-axis consistency
-            entries.add(new Entry(entries.size(), cumulativeBalance)); // Add empty entry for future date
+            entries.add(new Entry(entries.size(), cumulativeBalance));
             xDates.add(new SimpleDateFormat("dd MMM", Locale.getDefault()).format(endDate));
         }
-
-        // Create LineDataSet and customize it
         LineDataSet lineDataSet = new LineDataSet(entries, "Solde");
         lineDataSet.setColor(Color.rgb(244, 206, 20));
         lineDataSet.setValueTextColor(Color.BLACK);
@@ -373,18 +355,16 @@ public class PageGraphique extends AppCompatActivity implements View.OnClickList
         );
         lineDataSet.setFillDrawable(drawable);
         lineDataSet.setDrawValues(true);
-
-        // Set a custom ValueFormatter to hide values on consecutive equal points
         lineDataSet.setValueFormatter(new ValueFormatter() {
             private float lastValue = Float.MIN_VALUE;
 
             @Override
             public String getFormattedValue(float value) {
                 if (value == lastValue) {
-                    return "";  // Return empty string to avoid displaying the value if it is the same as the last value
+                    return "";
                 }
-                lastValue = value;  // Update the lastValue to current value
-                return "$" + (int) value;  // Format the value as currency
+                lastValue = value;
+                return "$" + (int) value;
             }
         });
 
@@ -396,22 +376,20 @@ public class PageGraphique extends AppCompatActivity implements View.OnClickList
         xAxis.setGranularity(1f);
         xAxis.setLabelRotationAngle(45);
         xAxis.setTextSize(10f);
-        xAxis.setDrawGridLines(false);  // Disable grid lines on X axis
+        xAxis.setDrawGridLines(false);
         xAxis.setAxisMinimum(0);
         xAxis.setAxisMaximum(xDates.size() - 1);
 
-        // Show only every nth label (e.g., every 2nd date)
         xAxis.setLabelCount(xDates.size() / 5, false);
 
-        // Custom ValueFormatter to display fewer dates
         xAxis.setValueFormatter(new ValueFormatter() {
             @Override
             public String getAxisLabel(float value, AxisBase axis) {
                 int i = (int) value;
-                if (i % 2 == 0) {  // Display label only for every 2nd date
+                if (i % 2 == 0) {
                     return (i >= 0 && i < xDates.size()) ? xDates.get(i) : "";
                 } else {
-                    return "";  // Do not display a label for this date
+                    return "";
                 }
             }
         });
@@ -421,7 +399,7 @@ public class PageGraphique extends AppCompatActivity implements View.OnClickList
         leftAxis.setTextSize(14f);
         leftAxis.setAxisMinimum(0f);
         leftAxis.setAxisMaximum(montantObjectif);
-        leftAxis.setDrawGridLines(false);  // Disable grid lines on Y axis
+        leftAxis.setDrawGridLines(false);
         leftAxis.setGranularity(100f);
         leftAxis.setValueFormatter(new ValueFormatter() {
             @Override
@@ -430,24 +408,20 @@ public class PageGraphique extends AppCompatActivity implements View.OnClickList
             }
         });
 
-        // Disable right axis
         lineChart.getAxisRight().setEnabled(false);
         lineChart.getDescription().setEnabled(false);
         lineChart.setData(lineData);
 
-        // Add a vertical line at today's date
         int todayIndex = xDates.indexOf(new SimpleDateFormat("dd MMM", Locale.getDefault()).format(today));
         if (todayIndex != -1) {
             LimitLine todayLine = new LimitLine(todayIndex, "Aujourd'hui");
-            todayLine.setLineColor(Color.argb(100, 255, 0, 0));  // Red color with transparency
+            todayLine.setLineColor(Color.argb(100, 255, 0, 0));
             todayLine.setLineWidth(2f);
-            todayLine.enableDashedLine(10f, 5f, 0f);  // Optional: dashed line style
+            todayLine.enableDashedLine(10f, 5f, 0f);
             todayLine.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_TOP);
-            todayLine.setTextColor(Color.argb(100, 255, 0, 0));  // Matching text color to the line
+            todayLine.setTextColor(Color.argb(100, 255, 0, 0));
             xAxis.addLimitLine(todayLine);
         }
-        // Ajouter une ligne horizontale au niveau du solde actuel à partir d'aujourd'hui jusqu'à la fin
-        // Ligne horizontale à partir d'aujourd'hui jusqu'à la fin
         if (todayIndex != -1 && todayIndex < xDates.size() - 1) {
             ArrayList<Entry> renduLine = new ArrayList<>();
             renduLine.add(new Entry(todayIndex, cumulativeBalance));
@@ -458,27 +432,21 @@ public class PageGraphique extends AppCompatActivity implements View.OnClickList
             renduDataSet.setLineWidth(1.5f);
             renduDataSet.enableDashedLine(10f, 5f, 0f);
             renduDataSet.setDrawCircles(false);
-            renduDataSet.setDrawValues(false);  // Pas de texte sur la ligne
+            renduDataSet.setDrawValues(false);
 
             lineData.addDataSet(renduDataSet);
         }
 
-        lineChart.invalidate();  // Refresh the chart
+        lineChart.invalidate();
     }
-
-
-
-
-
     private int daysBetween(Date startDate, Date endDate) {
         long diff = endDate.getTime() - startDate.getTime();
-        return (int) (diff / (1000 * 60 * 60 * 24)); // Convert milliseconds to days
+        return (int) (diff / (1000 * 60 * 60 * 24));
     }
-
     private Date addDays(Date date, int days) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
-        cal.add(Calendar.DATE, days);  // Add days to the date
+        cal.add(Calendar.DATE, days);
         return cal.getTime();
     }
     private void fetchTransactionAsync(OnDataFetchedListener listener) {
@@ -520,7 +488,6 @@ public class PageGraphique extends AppCompatActivity implements View.OnClickList
 
 
     }
-
     private void fetchDateDebutFin(OnDataFetchedListener listener){
         Map<String, String> headers = new HashMap<>();
         headers.put("Authorization", "Bearer " + token);
