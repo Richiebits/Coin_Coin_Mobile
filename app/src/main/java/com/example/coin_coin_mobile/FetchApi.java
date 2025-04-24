@@ -20,7 +20,6 @@ public class FetchApi {
     public static void fetchData(String path, String method, String jsonBody, Map<String, String> headers, OnDataFetchedListener listener) {
         String ipAddressP = "10.0.0.182"; // téléphone - louis
         String ipAddressE = "10.0.2.2"; // émulateur
-
         new Thread(() -> {
             try {
                 URL url = new URL("http://" + ipAddressE + ":8000/api/" + path);
@@ -83,8 +82,6 @@ public class FetchApi {
                 } else {
                     InputStream errorStream = conn.getErrorStream();
                     if(errorStream != null) {
-
-
                         BufferedReader reader = new BufferedReader(new InputStreamReader(errorStream));
                         StringBuilder responseBuilder = new StringBuilder();
                         String line;
