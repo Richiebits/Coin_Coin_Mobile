@@ -67,23 +67,4 @@ public class ProjetAdapter extends ArrayAdapter {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
