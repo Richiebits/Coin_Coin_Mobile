@@ -45,6 +45,7 @@ import org.json.JSONObject;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -118,30 +119,34 @@ public class PageGraphique extends AppCompatActivity implements View.OnClickList
                 }
         );
         chargerScrollHorizontal();
-
         //fecthing data
         fetchTransactionAsync(new OnDataFetchedListener() {
             @Override
             public void onSuccess(String data) {
-                for(Transaction transaction : transactionList){
-                    Log.d("GRAPHDEBUG", "trans :" +String.valueOf(transaction));
+                for (Transaction transaction : transactionList) {
+                    Log.d("GRAPHDEBUG", " :" + String.valueOf(transaction));
                 }
                 fetchDateDebutFin(new OnDataFetchedListener() {
                     @Override
                     public void onSuccess(String data) {
-                        Log.d("ERREUR", "dates :" +dateDebut + "      " + dateFin);
-                        if(dateFin.isEmpty() || dateFin.equals("null")){
+                        Log.d("ERREUR", "dates :" + dateDebut + "      " + dateFin);
+                        if (dateFin.isEmpty() || dateFin.equals("null")) {
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                                if(!LocalDate.now().toString().equals(dateDebut)){
+                                if (!LocalDate.now().toString().equals(dateDebut)) {
                                     dateFin = LocalDate.now().toString();
-                                }else{
+                                } else {
                                     dateFin = LocalDate.now().plusDays(1).toString();
                                 }
                             }
                         }
+                        transactionList = processTransactions(transactionList);
+                        for (Transaction transaction : transactionList) {
+                            Log.d("GRAPHDEBUG", "trans :" + String.valueOf(transaction));
+                        }
                         chargerGraphique();
-                        Log.d("ERREUR", "dates :" +dateDebut + "      " + dateFin);
+                        Log.d("ERREUR", "dates :" + dateDebut + "      " + dateFin);
                     }
+
                     @Override
                     public void onError(String error) {
                         Log.d("ERREUR", "erreur fetch transaction pour le graphique :" + error);
@@ -156,6 +161,7 @@ public class PageGraphique extends AppCompatActivity implements View.OnClickList
         });
 
     }
+
     @Override
     public void onClick(View v) {
         if (v == btnRetour) {
@@ -183,6 +189,7 @@ public class PageGraphique extends AppCompatActivity implements View.OnClickList
             startActivity(intent);
         }
     }
+
     @SuppressLint("ClickableViewAccessibility")
     public void chargerScrollHorizontal() {
         carteLayout = findViewById(R.id.carteLayout);
@@ -278,6 +285,7 @@ public class PageGraphique extends AppCompatActivity implements View.OnClickList
             Log.e("MainActivity", "Error: layoutCarte or horizontalScrollView is null.");
         }
     }
+
     public void chargerGraphique() {
         LineChart lineChart = (LineChart) findViewById(R.id.lineChart);
 
@@ -302,12 +310,9 @@ public class PageGraphique extends AppCompatActivity implements View.OnClickList
         }
 
         xDates.add(new SimpleDateFormat("dd MMM", Locale.getDefault()).format(startDate));
-
         int index = 0;
         float cumulativeBalance = 0;
-
         Map<String, Float> groupedTransactions = new TreeMap<>();
-
         for (Transaction t : transactionList) {
             try {
                 Date tDate = sdfFull.parse(t.getDate());
@@ -439,16 +444,19 @@ public class PageGraphique extends AppCompatActivity implements View.OnClickList
 
         lineChart.invalidate();
     }
+
     private int daysBetween(Date startDate, Date endDate) {
         long diff = endDate.getTime() - startDate.getTime();
         return (int) (diff / (1000 * 60 * 60 * 24));
     }
+
     private Date addDays(Date date, int days) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         cal.add(Calendar.DATE, days);
         return cal.getTime();
     }
+
     private void fetchTransactionAsync(OnDataFetchedListener listener) {
         Map<String, String> headers = new HashMap<>();
         headers.put("Authorization", "Bearer " + token);
@@ -464,11 +472,12 @@ public class PageGraphique extends AppCompatActivity implements View.OnClickList
                         String type = jsonData.getString("type");
                         int montant = jsonData.getInt("montant");
                         String date = jsonData.getString("date_histo");
+                        int recurrence = jsonData.getInt("recurrence");
                         if (type.equalsIgnoreCase("retrait") && montant > 0) {
                             montant = -montant;
                         }
 
-                        Transaction transaction = new Transaction(id, montant, date, type);
+                        Transaction transaction = new Transaction(id, montant, date, type, recurrence);
                         transactionList.add(transaction);
                         Collections.sort(transactionList, Comparator.comparing(Transaction::getDate));
                     }
@@ -488,7 +497,8 @@ public class PageGraphique extends AppCompatActivity implements View.OnClickList
 
 
     }
-    private void fetchDateDebutFin(OnDataFetchedListener listener){
+
+    private void fetchDateDebutFin(OnDataFetchedListener listener) {
         Map<String, String> headers = new HashMap<>();
         headers.put("Authorization", "Bearer " + token);
         FetchApi.fetchData("budget/projet/" + projetId, "GET", null, headers, new OnDataFetchedListener() {
@@ -499,8 +509,8 @@ public class PageGraphique extends AppCompatActivity implements View.OnClickList
                     JSONArray depotsArray = new JSONArray(data);
                     for (int i = 0; i < depotsArray.length(); i++) {
                         JSONObject jsonData = depotsArray.getJSONObject(i);
-                         dateDebut = jsonData.getString("date_debut");
-                         dateFin = jsonData.getString("date_fin");
+                        dateDebut = jsonData.getString("date_debut");
+                        dateFin = jsonData.getString("date_fin");
                     }
                 } else {
                     Log.e("ERROR", "Empty or invalid data received: " + data);
@@ -517,5 +527,35 @@ public class PageGraphique extends AppCompatActivity implements View.OnClickList
         });
 
     }
+
+    public static ArrayList<Transaction> processTransactions(ArrayList<Transaction> transactionList) {
+        ArrayList<Transaction> tempTransactionList = new ArrayList<>();
+        DateTimeFormatter formatter = null;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+            LocalDate today = LocalDate.now();
+
+            for (Transaction t : transactionList) {
+                int recurrence = t.getRecurrence();
+                LocalDate currentDate = LocalDate.parse(t.getDate(), formatter);
+
+
+                tempTransactionList.add(new Transaction(t.getId(), t.getMontant(), currentDate.format(formatter), t.getType(), 0));
+
+
+                while (recurrence > 0) {
+                    currentDate = currentDate.plusDays(recurrence);
+                    if (currentDate.isAfter(today)) {
+                        break;
+                    }
+                    tempTransactionList.add(new Transaction(t.getId(), t.getMontant(), currentDate.format(formatter), t.getType(), 0));
+                }
+            }
+        }
+
+        return tempTransactionList;
+    }
+
 
 }

@@ -2,20 +2,24 @@ package modele;
 
 public class Transaction {
     private int id;
-    private int montant;
+    private int montant,recurrence;
     private String date;
     private String type;
 
-    public Transaction(int id, int montant, String date, String type) {
+    public Transaction(int id, int montant, String date, String type, int recurrence) {
         this.id = id;
         this.montant = montant;
         this.date = date;
         this.type = type;
+        this.recurrence = recurrence;
     }
 
     // Getters
     public int getId() {
         return id;
+    }
+    public int getRecurrence() {
+        return recurrence;
     }
 
     public int getMontant() {
@@ -38,6 +42,9 @@ public class Transaction {
     public void setMontant(int montant) {
         this.montant = montant;
     }
+    public void setRecurrence(int recurrence) {
+        this.recurrence = recurrence;
+    }
 
     public void setDate(String date) {
         this.date = date;
@@ -54,6 +61,7 @@ public class Transaction {
                 ", montant=" + montant +
                 ", date='" + date + '\'' +
                 ", type='" + type + '\'' +
+                ", recurrence='" + recurrence + '\'' +
                 '}';
     }
 }

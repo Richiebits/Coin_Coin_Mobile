@@ -21,6 +21,7 @@ public class FetchApi {
         String ipAddressP = "10.0.0.182"; // téléphone - louis
         String ipAddressE = "10.0.2.2"; // émulateur
 
+
         new Thread(() -> {
             try {
                 URL url = new URL("http://" + ipAddressP + ":8000/api/" + path);
