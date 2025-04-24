@@ -203,7 +203,7 @@ public class PageGraphique extends AppCompatActivity implements View.OnClickList
                         @Override
                         public void onSuccess(String data) throws JSONException {
                             dialogSupp.dismiss();
-                            Toast.makeText(PageGraphique.this,"Projet " + projetNom + " supprimer!",Toast.LENGTH_LONG).show();
+                            Toast.makeText(PageGraphique.this,"Projet " + projetNom + " supprimé!",Toast.LENGTH_LONG).show();
                             Intent intent = new Intent(PageGraphique.this,PageProjet.class);
                             intent.putExtra("USER_ID",id);
                             intent.putExtra("TOKEN",token);

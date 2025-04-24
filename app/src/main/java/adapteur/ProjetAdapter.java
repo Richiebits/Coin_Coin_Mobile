@@ -44,8 +44,21 @@ public class ProjetAdapter extends ArrayAdapter {
 
         final Projet projet = this.projets.get(position);
         if (view != null){
+            String nomP = projet.getNom();
             final TextView tvNomProjet = view.findViewById(R.id.tvNomProjet);
+            final ImageView ivProjet = view.findViewById(R.id.imageProjet);
             tvNomProjet.setText(projet.getNom());
+            if (nomP.equalsIgnoreCase("motoneige")){
+                ivProjet.setImageResource(R.drawable.motoneige);
+            } else if (nomP.equalsIgnoreCase("auto")){
+                ivProjet.setImageResource(R.drawable.auto);
+            }else if (nomP.equalsIgnoreCase("GPU")||nomP.equalsIgnoreCase("carte graphique")||nomP.equalsIgnoreCase("graphic card")){
+                ivProjet.setImageResource(R.drawable.gpu);
+
+            } else {
+                ivProjet.setImageResource(R.drawable.dollar);
+            }
+
         }
         return view;
     }

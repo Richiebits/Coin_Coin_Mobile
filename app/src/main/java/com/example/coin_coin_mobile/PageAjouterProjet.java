@@ -243,6 +243,10 @@ public class PageAjouterProjet extends AppCompatActivity implements View.OnClick
                             @Override
                             public void onSuccess(String data) throws JSONException {
                                 Toast.makeText(PageAjouterProjet.this, "Projet créé avec succès", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(PageAjouterProjet.this,PageProjet.class);
+                                intent.putExtra("USER_ID",id);
+                                intent.putExtra("TOKEN",token);
+                                startActivity(intent);
                             }
 
                             @Override
@@ -277,6 +281,10 @@ public class PageAjouterProjet extends AppCompatActivity implements View.OnClick
                             @Override
                             public void onSuccess(String data) throws JSONException {
                                 Toast.makeText(PageAjouterProjet.this, "Projet créé avec succès", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(PageAjouterProjet.this,PageProjet.class);
+                                intent.putExtra("USER_ID",id);
+                                intent.putExtra("TOKEN",token);
+                                startActivity(intent);
 
                             }
 
