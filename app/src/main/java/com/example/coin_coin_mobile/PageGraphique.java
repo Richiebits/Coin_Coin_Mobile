@@ -14,17 +14,20 @@ import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.Button;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.core.graphics.Insets;
@@ -79,7 +82,7 @@ public class PageGraphique extends AppCompatActivity implements View.OnClickList
     private String id, token, projetNom;
     private int projetId;
 
-    private CardView btnDepot, btnRetrait, btnDate, btnConfig;
+    private CardView btnDepot, btnRetrait, btnDate, btnConfig,btnSupp;
     private ActivityResultLauncher<Intent> aRL;
     private TextView txtTitre;
     ArrayList<Transaction> transactionList = new ArrayList<>();
@@ -107,6 +110,8 @@ public class PageGraphique extends AppCompatActivity implements View.OnClickList
         btnDepot = (CardView) findViewById(R.id.btnDepot);
         btnDepot.setOnClickListener(this);
         txtTitre = (TextView) findViewById(R.id.txtTitre);
+        btnSupp = (CardView)findViewById(R.id.btnSupprimer);
+        btnSupp.setOnClickListener(this);
         Intent intent = getIntent();
         this.id = intent.getStringExtra("USER_ID");
         this.token = intent.getStringExtra("TOKEN");
@@ -205,6 +210,47 @@ public class PageGraphique extends AppCompatActivity implements View.OnClickList
             intent.putExtra("PROJET_ID", projetId);
             intent.putExtra("PROJET_NOM", projetNom);
             startActivity(intent);
+        }
+        if (v== btnSupp){
+            AlertDialog dialogSupp = new AlertDialog.Builder(this)
+                    .setTitle("Supprimer le projet?")
+                    .setPositiveButton("SUPPRIMER", null)
+                    .setNegativeButton("ANNULER", null)
+                    .create();
+            dialogSupp.setOnShowListener(dialogInterface -> {
+                Button positiveButton = dialogSupp.getButton(AlertDialog.BUTTON_POSITIVE);
+                positiveButton.setOnClickListener(view -> {
+                    Map<String, String> headers = new HashMap<>();
+                    headers.put("Authorization", "Bearer " + token);
+                    FetchApi.fetchData("projet/delete/" + projetId +"/" + id, "DELETE", null, headers, new OnDataFetchedListener() {
+
+                        @Override
+                        public void onSuccess(String data) throws JSONException {
+                            dialogSupp.dismiss();
+                            Toast.makeText(PageGraphique.this,"Projet " + projetNom + " supprimer!",Toast.LENGTH_LONG).show();
+                            Intent intent = new Intent(PageGraphique.this,PageProjet.class);
+                            intent.putExtra("USER_ID",id);
+                            intent.putExtra("TOKEN",token);
+                            startActivity(intent);
+
+
+                        }
+
+                        @Override
+                        public void onError(String error) {
+                            Log.e("ERROR", "Fetch depots error: " + error);
+                        }
+                    });
+
+
+                });
+
+
+            });
+            dialogSupp.show();
+
+
+
         }
     }
 

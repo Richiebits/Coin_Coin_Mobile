@@ -22,7 +22,7 @@ public class FetchApi {
         String ipAddressE = "10.0.2.2"; // émulateur
         new Thread(() -> {
             try {
-                URL url = new URL("http://" + ipAddressP + ":8000/api/" + path);
+                URL url = new URL("http://" + ipAddressE + ":8000/api/" + path);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod(method);
                 conn.setConnectTimeout(5000);
