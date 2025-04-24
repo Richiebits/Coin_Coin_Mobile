@@ -688,7 +688,7 @@ public class PageGraphique extends AppCompatActivity implements View.OnClickList
             flagImpossible = false;
             double nombreJour = (montantObjectif - montantInstant) / montantParJour;
 
-            if (nombreJour > 36500.0) {
+            if (nombreJour > 10000.0) {
                 flagIreal = true;
             }else{
                 flagIreal = false;
